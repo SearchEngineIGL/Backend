@@ -26,22 +26,39 @@ SECRET_KEY = 'django-insecure-s+eel0_zunu2t+ohjsy(2bdf=ycb8g019e9)mt6j%2cnlkqslf
 DEBUG = True
 
 ALLOWED_HOSTS = []
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'enginesearch865@gmail.com'
+EMAIL_HOST_PASSWORD = 'bwif wdil zkfn atbp'
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'authenticationApp',
     'userApp',
+    'moderatorApp',
+    'adminApp',
     'rest_framework',
 ]
+AUTH_USER_MODEL = 'authenticationApp.CustomUser'
 
-REST_FRAMWORK={}
+
+REST_FRAMWORK={
+    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication',],
+    }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
