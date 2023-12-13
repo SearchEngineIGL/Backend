@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from .managers import CustomUserManager
+from django.utils.translation import gettext_lazy as _
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = [
@@ -9,39 +11,31 @@ class CustomUser(AbstractUser):
     ]
 
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='simple')
-    #email = models.EmailField(max_length=100)
+    email = models.EmailField(unique=True)
     
-
-    #full_name = models.CharField(max_length=100)
+    objects=CustomUserManager()
+    def __str__(self) :
+        return self.email
+    
+    def tokens(self):
+        pass
     
 
 class SimpleUser(CustomUser):
-    @classmethod
-    def create_user(cls,username,email,password):
-        user=cls(username=username,email=email)
-        user.set_password(password)
-        user.save()
-        return user
-
+    pass
 
     
 
 class ModeratorUser(CustomUser):
-    @classmethod
-    def create_user(cls,username,email,password):
-        user=cls(username=username,email=email)
-        user.set_password(password)
-        user.save()
-        return user
-
+    pass
 
 class AdminUser(CustomUser):
-    @classmethod
-    def create_user(cls,username,email,password):
-        user=cls(username=username,email=email)
-        user.set_password(password)
-        user.save()
-        return user
-
+    pass
     
+
+class OneTimePassword(models.Model):
+    user=models.OneToOneField(SimpleUser,on_delete=models.CASCADE)
+    code=models.CharField(max_length=6,unique=True)
+    def __str__(self):
+        return f"{self.user.username} passcode "
     
