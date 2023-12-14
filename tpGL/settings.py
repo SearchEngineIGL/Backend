@@ -39,7 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userApp',
     'rest_framework',
+    'django_elasticsearch_dsl',
 ]
+# Elasticsearch settings
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200',  #  the Elasticsearch server address
+    },
+}
 
 REST_FRAMWORK={}
 
