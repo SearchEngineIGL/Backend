@@ -6,11 +6,11 @@ from rest_framework import status
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from .utils import send_code_to_user
-
+from .models import OneTimePassword
 @api_view(['POST'])
 def Register(request):
     if request.method == 'POST':
-        serializer=SimpleUserSerializer(data=request.data)
+        serializer=RegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             user=serializer.data
@@ -19,12 +19,26 @@ def Register(request):
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['POST'])
+def VerifyUserEmail(request):
+    if request.method=='POST':
+        otpcode=request.data.get('otp')
+        try :
+            user_code_obj=OneTimePassword.objects.get(code=otpcode)
+            user=user_code_obj.user
+            if not user.is_verified:
+                user.is_verified=True
+                user.save()
+                return Response({
+                    'messege':"Account email verified succefully ."
+                },status=status.HTTP_200_OK)
+            return Response({'message':'code is invalid, user already verified'},status=status.HTTP_204_NO_CONTENT)
+        except OneTimePassword.DoesNotExist:
+            return Response({'message': 'passcode not provided'},status=status.HTTP_404_NOT_FOUND)
+            
+    
+@api_view(['POST'])
 def LogIn(request):
     if request.method=='POST':
-        email=request.data.get('email')
-        password=request.data.get('password')
-        user=authenticate(email=email,password=password)
-        if user :
-            token=Token.objects.get_or_create(user=user)
-            return Response({'token':token.key},status=status.HTTP_200_OK)
-        return Response({'error':'Invalid credentials'},status=status.HTTP_401_UNAUTHORIZED)
+        serializer=LoginSerializer(data=request.data,context={'request':request})
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
