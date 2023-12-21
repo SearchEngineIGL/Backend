@@ -6,7 +6,10 @@ from rest_framework import status
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from .utils import send_code_to_user
-from .models import OneTimePassword
+from .models import OneTimePassword,CustomUser
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import smart_str,DjangoUnicodeDecodeError
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 @api_view(['POST'])
 def Register(request):
     if request.method == 'POST':
@@ -42,3 +45,22 @@ def LogIn(request):
         serializer=LoginSerializer(data=request.data,context={'request':request})
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+    
+
+@api_view([('POST')])
+def PasswordResetView(request):
+    if request.methode=="POST":
+        serializer=PasswordResetRequestSerializer(data=request,context={'request':request})
+        serializer.is_valide(raise_exception=True)
+        return Response({'message':"A link has been sent to your email to reset your password . "},status=status.HTTP_200_OK)
+    
+@api_view([('GET')])
+def PasswordResetConfirm(request,uidb64,token):
+    if request.methode=='GET':
+        try:
+            user_id=smart_str(urlsafe_base64_decode(uidb64))
+            
+        except:
+        
+        
+    
