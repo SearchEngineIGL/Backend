@@ -4,9 +4,9 @@ from .managers import *
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import smart_str,smart_bytes
+from django.utils.encoding import smart_str,smart_bytes,force_str
 from django.urls import reverse
 from .utils import send_normal_email
 
@@ -73,13 +73,16 @@ class PasswordResetRequestSerializer(serializers.Serializer):
     def validate(self,attrs):
         email=attrs.get('email')
         if CustomUser.objects.filter(email=email).exists():
+            
             user=CustomUser.objects.get(email=email)
             uidb64=urlsafe_base64_encode(smart_bytes(user.id))# we try to code user id into string tha we can read
             token=PasswordResetTokenGenerator().make_token(user)
             request =self.context.get('request')
             site_domain=get_current_site(request).domain
-            relative_link=reverse('password-reset-confirm',kwargs=[{'uidb64':uidb64, 'token':token}])
+            print('ablaaa')
+            relative_link = reverse('password-reset-confirm', kwargs={'uidb64': uidb64, 'token': token})
             abslink=f"http://{site_domain}{relative_link}"
+            
             email_body=f"Salam Alaikoum, \n use the link below to reset your password : \n{abslink}"
             data={
                 'email_body':email_body,
@@ -89,4 +92,26 @@ class PasswordResetRequestSerializer(serializers.Serializer):
             send_normal_email(data)
         return super().validate(attrs)
         
+
+class SetNewPasswordSerializer(serializers.Serializer):
+    password=serializers.CharField(max_length=100,min_length=6,write_only=True)
+    uidb64=serializers.CharField(write_only=True)
+    token=serializers.CharField(write_only=True)
+
+    class Meta:
+        fields=["password","uidb64","token"]
+    def validate(self,attrs):
+        try:
+            token=attrs.get('token')
+            uidb64=attrs.get('uidb64')
+            password=attrs.get('password')
+            user_id=force_str(urlsafe_base64_decode(uidb64))
+            user=CustomUser.objects.get(id=user_id)
+            if not PasswordResetTokenGenerator().check_token(user,token):
+                raise AuthenticationFailed("reset link is invalid or has expired")
+            user.set_password(password)
+            user.save()
+            return user
+        except Exception as e:
+            return AuthenticationFailed("Link is invalid or has expired !")
                 

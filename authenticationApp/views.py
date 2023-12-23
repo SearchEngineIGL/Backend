@@ -48,19 +48,29 @@ def LogIn(request):
     
 
 @api_view([('POST')])
-def PasswordResetView(request):
-    if request.methode=="POST":
-        serializer=PasswordResetRequestSerializer(data=request,context={'request':request})
-        serializer.is_valide(raise_exception=True)
-        return Response({'message':"A link has been sent to your email to reset your password . "},status=status.HTTP_200_OK)
+def PasswordReset(request):
+    if request.method=="POST":
+        serializer=PasswordResetRequestSerializer(data=request.data,context={'request':request})
+        print('hello')
+        serializer.is_valid(raise_exception=True)
+        
+        return Response({'message':'A link has been sent to your email to reset your password . '},status=status.HTTP_200_OK)
     
 @api_view([('GET')])
 def PasswordResetConfirm(request,uidb64,token):
-    if request.methode=='GET':
+    if request.method=='GET':
         try:
             user_id=smart_str(urlsafe_base64_decode(uidb64))
-            
-        except:
+            user=CustomUser.objects.get(id=user_id)
+            if not PasswordResetTokenGenerator().check_token(user,token):
+                return Response({'message':'token is invalid or has expired'},status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'success':True,'message':'credentials is valid','uidb64':uidb64,'token':token},status=status.HTTP_200_OK)
+        except DjangoUnicodeDecodeError:
+            return Response({'message':'token is invalid or has expired'},status=status.HTTP_401_UNAUTHORIZED)
         
         
-    
+@api_view(['PATCH'])
+def SetNewPassword(request):
+    serializer=SetNewPasswordSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    return Response({'message':'passwordreset successully'},status=status.HTTP_200_OK)
