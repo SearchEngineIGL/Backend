@@ -20,14 +20,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
         
         
-# class AdminUserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model=AdminUser
-#         fields=('id','username','email','password')
-#         extra_kwargs={'password':{'write_only':True}}
-#     def create(self,username,email,password):
-#         adminUser=AdminUser.objects.create_user(username,email,password)
-#         return adminUser
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=CustomUser
+        fields=('id','username','email')
         
         
 # class ModeratorUserSerializer(serializers.ModelSerializer):

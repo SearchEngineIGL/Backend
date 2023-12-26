@@ -3,6 +3,7 @@ from django.db import models
 from .managers import CustomUserManager
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.tokens import RefreshToken
+import json
 
 
 
@@ -26,7 +27,13 @@ class CustomUser(AbstractUser):
             'refresh':str(refresh),
             'access':str(refresh.access_token)
         }
+    additional_data = models.JSONField(blank=True, null=True)
 
+    def set_additional_data(self, data):
+        self.additional_data = json.dumps(data)
+
+    def get_additional_data(self):
+        return json.loads(self.additional_data) if self.additional_data else {}
 # class SimpleUser(CustomUser):
 #     objects=SimpleUserManager()
     

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'moderatorApp',
     'adminApp',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 AUTH_USER_MODEL = 'authenticationApp.CustomUser'
 AUTHENTICATION_BACKENDS = [
