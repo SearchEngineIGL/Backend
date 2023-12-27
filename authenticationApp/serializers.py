@@ -26,15 +26,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields=('id','username','email')
         
         
-# class ModeratorUserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model=ModeratorUser
-#         fields=('id','username','email','password')
-#         extra_kwargs={'password':{'write_only':True}}
-#     def create(self,username,email,password):
-#         moderatorUser=ModeratorUser.objects.create_user(username,email,password)
-#         return moderatorUser
-    
+ 
     
 class LoginSerializer(serializers.ModelSerializer):
     email=serializers.CharField(max_length=255)
@@ -51,7 +43,7 @@ class LoginSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.authenticate_user(email=email, password=password)
         if not user:
             raise AuthenticationFailed("invalid credentials try again")
-        if not user.is_verified:
+        if not user.is_verified and user.user_type=='simple':
             raise AuthenticationFailed("Email is not verified")
         user_tokens=user.tokens()
         

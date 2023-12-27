@@ -8,6 +8,7 @@ import json
 
 
 
+
 class CustomUser(AbstractUser):
     
     USER_TYPE_CHOICES = [
@@ -18,9 +19,9 @@ class CustomUser(AbstractUser):
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='admin')
     email = models.EmailField(unique=True)
     FullName= models.CharField(max_length=50, null=True, blank=True)
-    PhoneNumber=models.IntegerField(null=True,blank=True)
+    PhoneNumber=models.CharField(max_length=20,null=True,blank=True)
     is_verified=models.BooleanField(default=False)
-    
+    photo= models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100, null=True,blank=True)
     objects=CustomUserManager()
     
     def tokens(self):

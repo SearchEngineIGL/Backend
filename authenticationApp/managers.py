@@ -67,8 +67,10 @@ class CustomUserManager(BaseUserManager):
             user.save()
             
             return user
-    def create_moderator_user(self,username,email,password,user_type,**extra_fields):
+    def create_moderator_user(self,username,email,user_type,**extra_fields):
         user_type="moderator"
+        #by default, the password is the username
+        password=username
         user=self.create_user(
             username,email,password,user_type,**extra_fields
         )
