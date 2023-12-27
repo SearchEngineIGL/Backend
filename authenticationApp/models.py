@@ -17,6 +17,8 @@ class CustomUser(AbstractUser):
     ]
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='admin')
     email = models.EmailField(unique=True)
+    FullName= models.CharField(max_length=50, null=True, blank=True)
+    PhoneNumber=models.IntegerField(null=True,blank=True)
     is_verified=models.BooleanField(default=False)
     
     objects=CustomUserManager()
