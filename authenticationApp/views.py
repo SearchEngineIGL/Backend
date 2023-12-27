@@ -52,6 +52,7 @@ def LogIn(request):
     
 
 @api_view([('POST')])
+@permission_classes([AllowAny]) 
 def PasswordReset(request):
     if request.method=="POST":
         serializer=PasswordResetRequestSerializer(data=request.data,context={'request':request})
@@ -61,6 +62,7 @@ def PasswordReset(request):
         return Response({'message':'A link has been sent to your email to reset your password . '},status=status.HTTP_200_OK)
     
 @api_view([('GET')])
+@permission_classes([AllowAny]) 
 def PasswordResetConfirm(request,uidb64,token):
     if request.method=='GET':
         try:
@@ -74,6 +76,7 @@ def PasswordResetConfirm(request,uidb64,token):
         
         
 @api_view(['PATCH'])
+@permission_classes([AllowAny]) 
 def SetNewPassword(request):
     serializer=SetNewPasswordSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)

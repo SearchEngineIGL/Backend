@@ -54,6 +54,7 @@ def MAJ_moderator(request,id):
         serializer=CustomUserSerializer(user,request.data)
         if serializer.is_valid():
             serializer.save()
+            send_moderator_email_modify(serializer.data)
             return Response(serializer.data)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
             
@@ -65,7 +66,25 @@ def Delete_moderator(request,id):
             user=CustomUser.objects.get(id=id)
         except CustomUser.DoesNotExist():
             return Response(status=status.HTTP_404_NOT_FOUND)
+        email=user.email
         user.delete()
+        send_moderator_email_delete(email)
         return Response(status=status.HTTP_204_NO_CONTENT)
             
             
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated,IsAdminUser])
+def AdminSettings(request):
+    if request.method=='PUT':
+        admin_user=CustomUser.objects.get(user_type='admin')
+        id=admin_user.id
+        data=request.data
+        data['id']=id
+        serializer=ModifyAdminSerializer(admin_user,data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        

@@ -6,4 +6,5 @@ urlpatterns = [
     path('moderators/',views.list_of_moderators),
     path('modify-moderator/<int:id>',views.MAJ_moderator),
     path('delete-moderator/<int:id>',views.Delete_moderator),
+    path('settings/',views.AdminSettings)
 ]
