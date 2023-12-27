@@ -1,16 +1,26 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,authentication_classes,permission_classes
 from .serializers import *
 from authenticationApp.utils import *
 from rest_framework import status
 from .utils import *
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from .permissions import *
+
+
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated,IsAdminUser])
 def welcomeAdmin(request):
     return Response({'message':"Welcome Admin ! "})
 
+
 @api_view(['POST'])
+@permission_classes([IsAuthenticated,IsAdminUser])
 def create_moderator(request):
     if request.method == 'POST':
         serializer=CreateModeratorserializer(data=request.data)
@@ -21,15 +31,20 @@ def create_moderator(request):
             send_moderator_email(user_data)
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+    
+
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated,IsAdminUser])
 def list_of_moderators(request):
     if request.method =='GET':
         moderators=CustomUser.objects.filter(user_type="moderator")
         serializer=CustomUserSerializer(moderators,many=True)
         return Response(serializer.data)
     
+    
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated,IsAdminUser])
 def MAJ_moderator(request,id):
     if request.method=='PUT':
         try: 
@@ -42,8 +57,8 @@ def MAJ_moderator(request,id):
             return Response(serializer.data)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
             
-            
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated,IsAdminUser])
 def Delete_moderator(request,id):
     if request.method=='DELETE':
         try: 

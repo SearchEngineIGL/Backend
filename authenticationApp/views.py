@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from .serializers import *
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
@@ -11,6 +12,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import smart_str,DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 @api_view(['POST'])
+@permission_classes([AllowAny]) 
 def Register(request):
     if request.method == 'POST':
         serializer=RegisterSerializer(data=request.data)
@@ -22,6 +24,7 @@ def Register(request):
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['POST'])
+@permission_classes([AllowAny]) 
 def VerifyUserEmail(request):
     if request.method=='POST':
         otpcode=request.data.get('otp')
@@ -40,6 +43,7 @@ def VerifyUserEmail(request):
             
     
 @api_view(['POST'])
+@permission_classes([AllowAny]) 
 def LogIn(request):
     if request.method=='POST':
         serializer=LoginSerializer(data=request.data,context={'request':request})

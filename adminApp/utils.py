@@ -10,3 +10,4 @@ def send_moderator_email(data):
         to=[data['email']],
     )
     email.send()
+    
