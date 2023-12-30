@@ -20,15 +20,17 @@ def welcomeModerator(request):
 
 
 
-@api_view(['PUT'])
-@permission_classes([AllowAny])
+@api_view(['GET', 'PUT'])
+@permission_classes([IsAuthenticated,IsModeratorUser])
 def ModeratorSettings(request):
+    user = request.user
+    if request.method == 'GET':
+        serializer = ModifyModeratorSerializer(user)
+        return Response(serializer.data)
+
     if request.method=='PUT':
-        moderator_user=CustomUser.objects.get(user_type='moderator')
-        id=moderator_user.id
         data=request.data
-        data['id']=id
-        serializer=ModifyModeratorSerializer(moderator_user,data)
+        serializer=ModifyModeratorSerializer(user,data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

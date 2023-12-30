@@ -11,14 +11,14 @@ class ModifyModeratorSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
-    def update(self, instance, validated_data):
-        password = validated_data.get('password', instance.password)
+    # def update(self, instance, validated_data):
+    #     password = validated_data.get('password', instance.password)
 
-        # Update other fields
-        instance.username = validated_data.get('username', instance.username)
-        instance.email = validated_data.get('email', instance.email)
+    #     # Update other fields
+    #     instance.username = validated_data.get('username', instance.username)
+    #     instance.email = validated_data.get('email', instance.email)
 
-        # Set the password using the set_password method for proper hashing
-        instance.set_password(password)
-        instance.save()
-        return instance
+    #     # Set the password using the set_password method for proper hashing
+    #     instance.set_password(password)
+    #     instance.save()
+    #     return instance
