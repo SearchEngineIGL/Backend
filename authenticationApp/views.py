@@ -16,6 +16,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 def Register(request):
     if request.method == 'POST':
         serializer=RegisterSerializer(data=request.data)
+        print(request.data)
         if serializer.is_valid():
             serializer.save()
             user=serializer.data
