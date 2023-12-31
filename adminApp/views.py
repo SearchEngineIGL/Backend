@@ -74,14 +74,17 @@ def Delete_moderator(request,id):
             
 
 
-@api_view(['PUT'])
+@api_view(['PUT','GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def AdminSettings(request):
+    admin_user=request.user
+    if request.method == 'GET':
+        serializer = ModifyAdminSerializer(admin_user)
+        return Response(serializer.data)
+
     if request.method=='PUT':
-        admin_user=CustomUser.objects.get(user_type='admin')
-        id=admin_user.id
+        admin_user=request.user
         data=request.data
-        data['id']=id
         serializer=ModifyAdminSerializer(admin_user,data)
         if serializer.is_valid():
             serializer.save()
