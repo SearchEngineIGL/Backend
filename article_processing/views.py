@@ -1,18 +1,29 @@
+# views.py
 from django.shortcuts import render
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
-# Create your views here.
-# views.py
-# views.py
+@api_view(['GET'])
+def welcomeElasticSearch(request):
+    return Response({'message':"Welcome to elastic search ! "})
 
-from elasticsearch_documents import create_article_document
-from elasticsearch_utils import save_to_elasticsearch
+# from .elasticsearch_utils import index_document
 
-def process_article(title, content):
-    # Create an Elasticsearch document
-    article_document = create_article_document(
-        title=title,
-        content=content
-    )
+# def process_article(article_id, title, content):
+#     # Define your Elasticsearch index name
+#     index_name = 'articles'
 
-    # Save to Elasticsearch
-    save_to_elasticsearch(article_document)
+#     # Example call to index a document
+#     success = index_document(
+#         index_name=index_name,
+#         document_id=article_id,
+#         title=title,
+#         content=content,
+#         is_published=False  # Adjust based on your needs
+#     )
+
+#     if success:
+#         print(f"Successfully indexed document with ID: {article_id}")
+#     else:
+#         print(f"Failed to index document with ID: {article_id}")
+

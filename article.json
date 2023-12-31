@@ -1,0 +1,14 @@
+[
+    {
+        "model": "article_processing.Article",
+        "pk":1,
+        "fields":{
+            "title":"titre1",
+            "abstract":"this is the abstract",
+            "keywords":"this is keywords",
+            "authors":"this is authors",
+            "content":"this is content"
+        }
+
+    }
+]

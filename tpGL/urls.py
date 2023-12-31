@@ -23,4 +23,5 @@ urlpatterns = [
     path('',include('authenticationApp.urls')),
     path('manage/',include('adminApp.urls')),
     path('moderate/',include('moderatorApp.urls')),
+    path('article_processing/',include('article_processing.urls')),
 ]
