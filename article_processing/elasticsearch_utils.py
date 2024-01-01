@@ -52,7 +52,7 @@
 # # article_processing/elasticsearch_utils.py
 
 # from .elasticsearch_documents import ArticleDocument
-# from .models import Article
+#from .models import Article
 
 
 # def index_article(pdf_name, article_info):
@@ -92,73 +92,78 @@ from elasticsearch_documents import ArticleDocument
 
 es = connections.create_connection(hosts=['http://localhost:9200'], http_auth= ['elastic', 'nes2504rine'],)
 
-# Assuming articles_data is a list of dictionaries representing articles
-articles_data = [
-    {"title": "Title 1", "abstract": "Abstract 1", "keywords": ["key1", "key2"], "authors": ["author1", "author2"], "content": "Content 1"},
-    {"title": "Title 2", "abstract": "Abstract 2", "keywords": ["key3", "key4"], "authors": ["author3", "author4"], "content": "Content 2"},
-    {"title": "Title 3", "abstract": "Abstract 2", "keywords": ["key3", "key4"], "authors": ["author3", "author4"], "content": "Content 2"},
-    # Add more articles as needed
-]
+# # Assuming articles_data is a list of dictionaries representing articles
+# articles_data = [
+#     {"title": "Title 1", "abstract": "Abstract 1", "keywords": ["key1", "key2"], "authors": ["author1", "author2"], "content": "Content 1"},
+#     {"title": "Title 2", "abstract": "Abstract 2", "keywords": ["key3", "key4"], "authors": ["author3", "author4"], "content": "Content 2"},
+#     {"title": "Title 3", "abstract": "Abstract 3", "keywords": ["key5", "key6"], "authors": ["author5", "author6"], "content": "Content 3"},
+#     # Add more articles as needed
+# ]
 
-for article_data in articles_data:
-    ArticleDocument(**article_data).save()
+# for article_data in articles_data:
+#     ArticleDocument(**article_data).save()
 
-from elasticsearch import Elasticsearch
+# from elasticsearch import Elasticsearch
 
-# Connect to Elasticsearch
-es = Elasticsearch(['http://localhost:9200'], http_auth=['elastic', 'nes2504rine'])
+# # Connect to Elasticsearch
+# es = Elasticsearch(['http://localhost:9200'], http_auth=['elastic', 'nes2504rine'])
 
-def update_document(index, doc_id, new_data):
-    """
-    Update a document in the specified index.
+# def update_document(index, doc_id, new_data):
+#     """
+#     Update a document in the specified index.
 
-    Parameters:
-    - index: The index where the document is stored.
-    - doc_id: The ID of the document to be updated.
-    - new_data: A dictionary containing the new data to be added or updated in the document.
-    """
-    try:
-        # Use the update API to update the document
-        es.update(index=index, id=doc_id, body={"doc": new_data})
-        print(f"Document with ID {doc_id} updated successfully.")
-    except Exception as e:
-        print(f"Error updating document: {e}")
+#     Parameters:
+#     - index: The index where the document is stored.
+#     - doc_id: The ID of the document to be updated.
+#     - new_data: A dictionary containing the new data to be added or updated in the document.
+#     """
+#     try:
+#         # Use the update API to update the document
+#         es.update(index=index, id=doc_id, body={"doc": new_data})
+#         print(f"Document with ID {doc_id} updated successfully.")
+#     except Exception as e:
+#         print(f"Error updating document: {e}")
         
 
 
 
-# Connect to Elasticsearch
-es = Elasticsearch(['http://localhost:9200'])
+# # Connect to Elasticsearch
+# es = Elasticsearch(['http://localhost:9200'])
 
-def update_article(index, doc_id, new_data):
-    # Get the existing document
-    existing_doc = ArticleDocument.get(index=index, id=doc_id)
+# def update_article(index, doc_id, new_data):
+#     # Get the existing document
+#     existing_doc = ArticleDocument.get(index=index, id=doc_id)
 
-    # Update the document fields
-    for field, value in new_data.items():
-        setattr(existing_doc, field, value)
+#     # Update the document fields
+#     for field, value in new_data.items():
+#         setattr(existing_doc, field, value)
 
-    # Save the updated document
-    existing_doc.save()
-    print(f"Article with ID {doc_id} updated successfully.")
-    
-def add_article(index, article_data):
-    # Create a new ArticleDocument instance
-    new_article = ArticleDocument(**article_data)
+#     # Save the updated document
+#     existing_doc.save()
+#     print(f"Article with ID {doc_id} updated successfully.")
+# articles_data = [
+#     {"title": "Title 1", "abstract": "Abstract 1", "keywords": ["key1", "key2"], "authors": ["author1", "author2"], "content": "Content 1"},
+#     {"title": "Title 2", "abstract": "Abstract 2", "keywords": ["key3", "key4"], "authors": ["author3", "author4"], "content": "Content 2"},
+#     {"title": "Title 3", "abstract": "Abstract 2", "keywords": ["key3", "key4"], "authors": ["author3", "author4"], "content": "Content 2"},
+#     # Add more articles as needed
+# ]  
+# def add_article(index, article_data):
+#     # Create a new ArticleDocument instance
+#     new_article = ArticleDocument(**article_data)
 
-    # Save the new document
-    new_article.save()
-    print(f"New article added successfully.")
+#     # Save the new document
+#     new_article.save()
+#     print(f"New article added successfully.")
 
-# Example usage:
-new_article_data = {
-    "title": "New Title",
-    "abstract": "New Abstract",
-    "keywords": ["new_key1", "new_key2"],
-    "authors": ["new_author1", "new_author2"],
-    "content": "New Content"
-}
-add_article(index='article_index', article_data=new_article_data)
+# # Example usage:
+# new_article_data = {
+#     "title": "New Title",
+#     "abstract": "New Abstract",
+#     "keywords": ["new_key1", "new_key2"],
+#     "authors": ["new_author1", "new_author2"],
+#     "content": "New Content"
+# }
+# add_article(index='article', article_data=new_article_data)
 
 def delete_article(index, doc_id):
     # Get the existing document
@@ -172,11 +177,11 @@ def delete_article(index, doc_id):
 delete_article(index='article_index', doc_id='CqAJvYwBFg6TbgZinlaX')
 
 
-# Example usage:
-update_data = {"title": "Updated Title", "abstract": "Updated Abstract"}
-update_article(index='article_index', doc_id='CqAJvYwBFg6TbgZinlaX', new_data=update_data)
+# # Example usage:
+# update_data = {"title": "Updated Title", "abstract": "Updated Abstract"}
+# update_article(index='article_index', doc_id='CqAJvYwBFg6TbgZinlaX', new_data=update_data)
 
 
-# Example of updating a document with ID '1' in the 'article_index'
-update_data = {"references": "New Value", "title": "title 6"}
-update_document(index='article_index', doc_id='1', new_data=update_data)
+# # Example of updating a document with ID '1' in the 'article_index'
+# update_data = {"references": "New Value", "title": "title 6"}
+# update_document(index='article_index', doc_id='1', new_data=update_data)

@@ -59,12 +59,14 @@
 # documents.py
 from elasticsearch_dsl import Document, Text, Keyword
 
-class ArticleDocument(Document):
-    title = Keyword()
-    abstract = Text()
-    keywords = Keyword(multi=True)
-    authors = Keyword(multi=True)
-    content = Text()
+# class ArticleDocument(Document):
+#     title = Text()
+#     authors = Keyword(multi=True)
+#     # institutions = Keyword(multi=True)
+#     abstract = Text()
+#     keywords = Keyword(multi=True)
+#     content = Text()
+#     # refrences = Keyword(multi=True)
 
-    class Index:
-        name = 'article_index'
+#     class Index:
+#         name = 'article'

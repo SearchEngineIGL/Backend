@@ -1,71 +1,53 @@
 import re
 import spacy
-
 import fitz 
-
+"""__Function to remove header/footer
+     from the pdf file__
+    """
 def remove_header_footer(page):
      header_long=20
      footer_long=30
      blocks = page.get_text("blocks")
      header_block=blocks[0]
-     footer_block=blocks[len(blocks)-1]
-    #  print(header_block)
-    #  print("___________________________________________________")
-     
-    
-     
+     footer_block=blocks[len(blocks)-1] 
      if(len(footer_block[4])>20):
-         footer_block=( blocks[len(blocks)-2])
-         
+         footer_block=( blocks[len(blocks)-2])      
      if header_block[3]-header_block[1]<= header_long:
-        # print(header_block[3]-header_block[1])
         blocks.remove(header_block)
-         
      if footer_block[3]-footer_block[1]<= footer_long:
-       
         blocks.remove(footer_block) 
      return blocks
+"""__Function to extract title
+     from the pdf file__
+    """
 def extract_title(blocks):
     num = 0
     title_not_found = True
     title_position = 50
 
     while title_not_found:
-        
         title_block = blocks[num]
-        print(type(title_block[4]))
+       
         if title_block[3] - title_block[1] <= title_position and '<image:' not in str(title_block[4]):
-            print("Title found")
+           
             title_not_found = False
         else:
             num += 1
-
     return title_block
+
+"""__Function to transform a block to text(String)
+     from the pdf file__
+    """
 def blocks_to_text(blocks):
     text = ""
     for block in blocks:
-        # Check if the block is a text block (not an image)
         if type(block[4]) == str:
             text += block[4] + " "  # Append the text and add a space between blocks
     return text.strip()  # Remove leading and trailing whitespaces
-
-pdf_path = 'article_02.pdf'
-
-with fitz.open(pdf_path) as pdf_document:
-    text = ""
-    num_pages = pdf_document.page_count
-    for page_num in range(num_pages):
-        page = pdf_document[page_num]
-        page.wrap_contents()
-        blocks = remove_header_footer(page)
-        if page_num == 0:
-            title = extract_title(blocks)
-            print(title)
-       
-        #    print(blocks)
-        text += blocks_to_text(blocks)
-        print("this is page number", page_num)
-def extract_from_position_to_abstract(text, start_position):
+"""__Function to extract authors section (authors + institutions)
+     from the pdf file__
+ """
+def extract_authors_section(text, start_position):
     # Convert search terms and text to lowercase
     lower_text = text.lower()
     start_position = max(0, min(len(text), start_position))
@@ -86,7 +68,10 @@ def extract_from_position_to_abstract(text, start_position):
 
     return extracted_text.strip()
 
-
+"""__Function to recongnize authors names using the model of spacy
+     in the authors section 
+     from the pdf file__
+ """
 def recognize_authors_with_spacy(text):
     nlp = spacy.load("en_core_web_lg")
     # Use spaCy to recognize persons (authors)
@@ -103,7 +88,10 @@ def recognize_authors_with_spacy(text):
          doc = nlp(text)
          persons = [ent.text for ent in doc.ents if ent.label_ == "PERSON"] 
     return persons
-def remove_names_and_emails(text, persons):
+"""__Function to extract  institutions from the authors section
+     from the pdf file__
+ """
+def extract_institutions(text, persons):
     # Split the text into lines
     lines = text.split('\n')
 
@@ -112,9 +100,6 @@ def remove_names_and_emails(text, persons):
     # print(lines)
     # Remove lines containing names from the persons list
     for person in persons:
-        # for line in lines:
-        #     if (person not in line):
-        #         lines=lines.remove(line)
         
         lines = [line for line in lines if person not in line]
 
@@ -122,63 +107,86 @@ def remove_names_and_emails(text, persons):
     cleaned_text = '\n'.join(lines)
 
     return cleaned_text.strip()
-
-
-
-
-def extract_sections(text):
-    # Define patterns for each section
-    # title_pattern = re.compile(r"Title: (.+)")
-    authors_pattern = re.compile(r"Authors: (.+)")
-    
+"""__Function to extract  all the other sections from the text 
+     of the pdf file__
+ """
+def extract_sections(text,title):
+    # Define patterns for each section    
     abstract_pattern = re.compile(r"ABSTRACT[\n: ]+(.+?)(?:KEYWORDS|$)", re.DOTALL)
     keywords_pattern = re.compile(r"KEYWORDS[\n: ]+(.+?)(?:ACM Reference Format:|$)", re.DOTALL)
     content_pattern = re.compile(r"INTRODUCTION[\n: ]+(.+?)(?:REFERENCES|$)", re.DOTALL)
     references_pattern = re.compile(r"REFERENCES\n(.+)", re.DOTALL)
 
     # Extract information using regular expressions
-    # title_match = title_pattern.search(text)
-    # authors_match = authors_pattern.search(text)
     abstract_match = abstract_pattern.search(text)
     keywords_match = keywords_pattern.search(text)
     content_match = content_pattern.search(text)
     references_match = references_pattern.search(text)
 
     # Get matched groups
-    # title = title_match.group(1) if title_match else None
-    # authors = authors_match.group(1) if authors_match else None
     abstract = abstract_match.group(1).strip() if abstract_match else None
     keywords = keywords_match.group(1).strip() if keywords_match else None
     content = content_match.group(1).strip() if content_match else None
     references = references_match.group(1).strip() if references_match else None
 
     # Find the position of the title in the text
-    title_position = text.find(title[4]) if title else -1
+    title_position = text.find(title) if title else -1
     # print(title_position)
     # Modify authors extraction based on title position
     if title_position != -1:
-         start_position = title_position + len(title[4])
+         start_position = title_position + len(title)
 
-         authors_section = extract_from_position_to_abstract(text, start_position)
+         authors_section = extract_authors_section(text, start_position)
         #  print(authors_section)
          authors=recognize_authors_with_spacy(authors_section)
         #  print(authors)
-         institutions = remove_names_and_emails(authors_section,authors)
+         institutions = extract_institutions(authors_section,authors)
         #  print("------------------------------------------")
         #  print(institutions)
 
-    return title[4], institutions , authors, abstract, keywords, content, references
-# 
-# Example usage
-article_text = text
-# print(text)
-title, institutions , authors, abstract, keywords, content, references = extract_sections(article_text)
+    return  institutions , authors, abstract, keywords, content, references
 
-# # Print the information
-print(f"Title__________________: {title}")
-print(f"Institution-------------------------: {institutions}")
-print(f"Authors________________________: {authors}")
-print(f"Abstract------------------------: {abstract}")
-print(f"Keywords__________________________: {keywords}")
-print(f"References---------------------: {references}")
-print(f"Content_________________________: {content}")
+
+
+
+"""__Function to read the pdf file and extract all th information needed
+     __
+ """
+def extract_article_pdf(pdf_path):
+     with fitz.open(pdf_path) as pdf_document:
+      text = ""
+      num_pages = pdf_document.page_count
+      for page_num in range(num_pages):
+        page = pdf_document[page_num]
+        page.wrap_contents()
+        blocks = remove_header_footer(page)
+        if page_num == 0:
+            title = extract_title(blocks)
+          
+       
+        #    print(blocks)
+        text += blocks_to_text(blocks)
+       
+
+     institutions , authors, abstract, keywords, content, references = extract_sections(text,title[4])
+      # Create a dictionary
+     article_data = {
+        "title":title[4],
+        "institutions": institutions,
+        "authors": authors,
+        "abstract": abstract,
+        "keywords": keywords,
+        "content": content,
+        "references": references
+     }
+     # Return the dictionary
+     return article_data
+     
+
+
+# # Example usage
+# pdf_path = 'article_02.pdf'
+# article_data = extract_article_pdf(pdf_path)
+
+# for key, value in article_data.items():
+#     print(f"{key}: {value}")
