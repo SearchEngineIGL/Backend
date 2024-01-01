@@ -69,7 +69,7 @@ class PasswordResetRequestSerializer(serializers.Serializer):
             uidb64=urlsafe_base64_encode(smart_bytes(user.id))# we try to code user id into string tha we can read
             token=PasswordResetTokenGenerator().make_token(user)
             request =self.context.get('request')
-            site_domain=get_current_site(request).domain
+            site_domain="http://localhost:5173"
             print('ablaaa')
             relative_link = reverse('password-reset-confirm', kwargs={'uidb64': uidb64, 'token': token})
             abslink=f"http://{site_domain}{relative_link}"

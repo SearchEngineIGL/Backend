@@ -60,6 +60,10 @@ def PasswordReset(request):
         serializer=PasswordResetRequestSerializer(data=request.data,context={'request':request})
         print('hello')
         serializer.is_valid(raise_exception=True)
+        email=request.data.get('email')
+        user=CustomUser.objects.get(email=email)
+        if not user:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         
         return Response({'message':'A link has been sent to your email to reset your password . '},status=status.HTTP_200_OK)
     
