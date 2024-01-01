@@ -74,7 +74,7 @@ def Delete_moderator(request,id):
             
 
 
-@api_view(['PUT','GET'])
+@api_view(['PUT',''])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def AdminSettings(request):
     admin_user=request.user

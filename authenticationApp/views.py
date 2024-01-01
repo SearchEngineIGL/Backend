@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view,permission_classes
 from .serializers import *
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
@@ -49,6 +49,7 @@ def LogIn(request):
     if request.method=='POST':
         serializer=LoginSerializer(data=request.data,context={'request':request})
         serializer.is_valid(raise_exception=True)
+        print(serializer.data)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
 
@@ -83,3 +84,13 @@ def SetNewPassword(request):
     serializer.is_valid(raise_exception=True)
     return Response({'message':'passwordreset successully'},status=status.HTTP_200_OK)
 
+
+@api_view(['POST'])
+@permission_classes([AllowAny]) 
+def LogoutUser(request):
+    if request.method=='POST':
+        serializer=LogoutUserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_200_OK)
+    

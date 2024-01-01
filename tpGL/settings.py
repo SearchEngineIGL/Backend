@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'adminApp',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     "corsheaders",
 ]
 AUTH_USER_MODEL = 'authenticationApp.CustomUser'
