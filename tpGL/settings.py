@@ -37,7 +37,7 @@ EMAIL_HOST_USER = 'enginesearch865@gmail.com'
 EMAIL_HOST_PASSWORD = 'bwif wdil zkfn atbp'
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }

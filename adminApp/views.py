@@ -22,6 +22,7 @@ def welcomeAdmin(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def create_moderator(request):
+    
     if request.method == 'POST':
         serializer=CreateModeratorserializer(data=request.data)
         if serializer.is_valid():
