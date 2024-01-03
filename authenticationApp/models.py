@@ -21,7 +21,7 @@ class CustomUser(AbstractUser):
     FullName= models.CharField(max_length=50, null=True, blank=True)
     PhoneNumber=models.CharField(max_length=20,null=True,blank=True)
     is_verified=models.BooleanField(default=False)
-    photo= models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100, null=True,blank=True)
+    photo= models.ImageField(upload_to='profile_pictures/',  null=True,blank=True)
     objects=CustomUserManager()
     
     def tokens(self):

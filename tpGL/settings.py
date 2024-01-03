@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +38,7 @@ EMAIL_HOST_USER = 'enginesearch865@gmail.com'
 EMAIL_HOST_PASSWORD = 'bwif wdil zkfn atbp'
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
@@ -103,6 +104,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tpGL.wsgi.application'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'profile_pictures/'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
