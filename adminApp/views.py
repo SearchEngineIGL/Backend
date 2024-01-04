@@ -44,14 +44,18 @@ def list_of_moderators(request):
         return Response(serializer.data)
     
     
-@api_view(['PUT'])
+@api_view(['PUT','GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def MAJ_moderator(request,id):
+    try: 
+        user=CustomUser.objects.get(id=id)
+    except CustomUser.DoesNotExist():
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method=='GET':
+        serializer = CustomUserSerializer(user)
+        return Response(serializer.data)
     if request.method=='PUT':
-        try: 
-            user=CustomUser.objects.get(id=id)
-        except CustomUser.DoesNotExist():
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        
         serializer=CustomUserSerializer(user,request.data)
         if serializer.is_valid():
             serializer.save()
