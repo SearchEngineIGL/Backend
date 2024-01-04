@@ -1,6 +1,7 @@
 import re
 import spacy
 import fitz 
+import requests
 """__Function to remove header/footer
      from the pdf file__
     """
@@ -153,7 +154,15 @@ def extract_sections(text,title):
      __
  """
 def extract_article_pdf(pdf_path):
-     with fitz.open(pdf_path) as pdf_document:
+       # Fetch PDF content from the URL
+     response = requests.get(pdf_path)
+    
+     if response.status_code == 200:
+        pdf_content = response.content
+
+        # Use PyMuPDF to process the PDF content
+     with fitz.open("pdf", pdf_content) as pdf_document:
+    #  with fitz.open(pdf_path) as pdf_document:
       text = ""
       num_pages = pdf_document.page_count
       for page_num in range(num_pages):
@@ -177,7 +186,8 @@ def extract_article_pdf(pdf_path):
         "abstract": abstract,
         "keywords": keywords,
         "content": content,
-        "references": references
+        "references": references,
+        "state":"pending"
      }
      # Return the dictionary
      return article_data
@@ -190,3 +200,4 @@ def extract_article_pdf(pdf_path):
 
 # for key, value in article_data.items():
 #     print(f"{key}: {value}")
+

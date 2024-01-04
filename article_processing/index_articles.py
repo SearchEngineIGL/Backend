@@ -1,19 +1,19 @@
 from elasticsearch import Elasticsearch
-# from pdf_extraction import extract_article_pdf
+from adminApp.pdf_extraction import extract_article_pdf
 # Replace with your Elasticsearch server information
 ELASTICSEARCH_HOST = 'http://localhost:9200'
 ELASTICSEARCH_USERNAME = 'elastic'  
 ELASTICSEARCH_PASSWORD = 'nes2504rine'
-INDEX_NAME='articles_index'
+INDEX_NAME='articles_index2'
 # # Define your list of articles
-articles = [
-    {"article_id":1,"title": "Article 1", "content": "This is the content of Article 1.", "author": "John Doe"},
-    {"article_id":2,"title": "Article 2", "content": "This is the content of Article 2.", "author": "Jane Smith"},
-    {"article_id":2,"title": "Article 3", "content": "This is the content of Article 2.", "author": "Jane Smith"},
+# articles = [
+#     {"article_id":1,"title": "Article 1", "content": "This is the content of Article 1.", "author": "John Doe"},
+#     {"article_id":2,"title": "Article 2", "content": "This is the content of Article 2.", "author": "Jane Smith"},
+#     {"article_id":2,"title": "Article 3", "content": "This is the content of Article 2.", "author": "Jane Smith"},
     
-]
+# ]
 
-def index_articles():
+def index_articles(articles):
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
     
     # Create an index (if not exists)
@@ -167,9 +167,13 @@ def delete_index(index_name):
         print(f"Index {index_name} does not exist.")
 
 if __name__ == "__main__":
-    # pdf_path= "Article_02"
-    # articles=extract_article_pdf(pdf_path) 
+    pdf_path= "Article_02.pdf"
+    article=extract_article_pdf(pdf_path) 
     """_Call the index method _
     """
-    # index_articles()
+    article["article_id"] = 2
+    articles=[]
+    articles.append(article)
+    # print(articles)
+    index_articles(articles)
        
