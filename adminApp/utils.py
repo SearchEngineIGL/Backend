@@ -1,10 +1,10 @@
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
-
+from .pdf_extraction import extract_article_pdf
 import random
 from django.core.mail import EmailMessage
-# from models import CustomUser   
-from pdf_extraction import extract_article_pdf
+# from .models import CustomUser   
+# from ..article_processing.pdf_extraction import extract_article_pdf
 
 def send_moderator_email(data):
     email=EmailMessage(
@@ -61,13 +61,6 @@ def lister_fichiers_dans_Drive(folder_id):
 
 
 
-
-
-# def remove_download_param(gdrive_url):
-#     if "=download" in gdrive_url:
-#         gdrive_url = gdrive_url.replace("=download", "")
-#     return gdrive_url
-
 def get_list_extractedFiles(link):
  list_articles=[]
  dossier_id = extraire_id_dossier_google_drive(link)
@@ -84,6 +77,7 @@ def get_list_extractedFiles(link):
     for fichier in liste_fichiers:
         # Use 'webContentLink' for direct download link
         pdf_url = fichier['webContentLink']
+        print(pdf_url)
         result=extract_article_pdf(pdf_url)
         list_articles.append(result)       
  else:

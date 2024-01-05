@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_elasticsearch_dsl',
     'rest_framework_simplejwt',
+    'django_extensions',
 ]
 AUTH_USER_MODEL = 'authenticationApp.CustomUser'
 AUTHENTICATION_BACKENDS = [

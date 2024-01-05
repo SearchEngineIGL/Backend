@@ -169,14 +169,9 @@ def extract_sections(text,title):
      __
  """
 def extract_article_pdf(pdf_path):
-      # Fetch PDF content from the URL
-     response = requests.get(pdf_path)
     
-     if response.status_code == 200:
-        pdf_content = response.content
-
         # Use PyMuPDF to process the PDF content
-     with fitz.open("pdf", pdf_content) as pdf_document:
+     with fitz.open(pdf_path) as pdf_document:
     #  with fitz.open(pdf_path) as pdf_document:
       text = ""
       num_pages = pdf_document.page_count
@@ -212,3 +207,11 @@ def extract_article_pdf(pdf_path):
      return article_data
      
 
+
+# Example usage
+pdf_path = 'article_01.pdf'
+article_data = extract_article_pdf(pdf_path)
+
+
+# for key, value in article_data.items():
+#     print(f"{key}: {value}")

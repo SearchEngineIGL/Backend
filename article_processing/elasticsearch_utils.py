@@ -1,187 +1,201 @@
-# # # # elasticsearch_utils.py
-# # # from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch
 
-# # # es = Elasticsearch()
-
-# # # def save_to_elasticsearch(article_data):
-# # #     # Your Elasticsearch indexing logic here
-# # #     es.index(index='articles', body=article_data)
-
-# # # def publish_to_users(article_id):
-# # #     # Your Elasticsearch update logic here
-# # #     es.update(index='articles', id=article_id, body={'doc': {'is_published': True}})
-# # # # elasticsearch_utils.py
-
-# # from elasticsearch_dsl.connections import connections
-# # from .elasticsearch_documents import ArticleDocument
-
-# # from tpGL import settings  # Adjust this import based on your project structure
-
-# # # Use the configured Elasticsearch connection from settings
-# # elasticsearch_hosts = settings.ELASTICSEARCH_DSL.get('hosts', [])
-
-# # # Create the Elasticsearch connection
-# # connections.create_connection(hosts=elasticsearch_hosts)
-
-# # def index_document(index_name, document_id, title, content, is_published):
-# #     """
-# #     Index a document in Elasticsearch using Elasticsearch DSL.
-
-# #     Parameters:
-# #     - index_name: The name of the Elasticsearch index.
-# #     - document_id: The unique identifier for the document.
-# #     - title: The title of the document.
-# #     - content: The content of the document.
-# #     - is_published: The publication status of the document.
-
-# #     Returns:
-# #     - True if the indexing was successful, False otherwise.
-# #     """
-# #     try:
-# #         article = ArticleDocument(
-# #             meta={'id': document_id, 'index': index_name},
-# #             title=title,
-# #             content=content,
-# #             is_published=is_published
-# #         )
-# #         article.save()
-# #         return True
-# #     except Exception as e:
-# #         print(f"Error indexing document: {e}")
-# #         return False
-# # article_processing/elasticsearch_utils.py
-
-# from .elasticsearch_documents import ArticleDocument
-#from .models import Article
-
-
-# def index_article(pdf_name, article_info):
-#     # Create an instance of the Article class
-#     article = Article(
-#         title=article_info['title'],
-#         abstract=article_info['abstract'],
-#         keywords=article_info['keywords'],
-#         authors=article_info['authors'],
-#         content=article_info['content']
-#     )
-
-#     # Create an instance of the ArticleDocument class
-#     article_doc = ArticleDocument(
-#         meta={'id': pdf_name},
-#         title=article.title,
-#         abstract=article.abstract,
-#         keywords=article.keywords,
-#         authors=article.authors,
-#         content=article.content
-#     )
-
-#     # Index the article into Elasticsearch
-#     article_doc.save()
-
-# # Usage example
-# articles_dict = {
-#     'pdf1': {'title': 'Title1', 'abstract': 'Abstract1', 'keywords': ['key1', 'key2'], 'authors': ['author1'], 'content': 'Content1'},
-#     'pdf2': {'title': 'Title2', 'abstract': 'Abstract2', 'keywords': ['key3', 'key4'], 'authors': ['author2'], 'content': 'Content2'},
-#     # Add more articles as needed
-# }
-
-# for pdf_name, article_info in articles_dict.items():
-#     index_article(pdf_name, article_info)
-from elasticsearch_dsl.connections import connections
-from elasticsearch_documents import ArticleDocument
-
-es = connections.create_connection(hosts=['http://localhost:9200'], http_auth= ['elastic', 'nes2504rine'],)
-
-# # Assuming articles_data is a list of dictionaries representing articles
-# articles_data = [
-#     {"title": "Title 1", "abstract": "Abstract 1", "keywords": ["key1", "key2"], "authors": ["author1", "author2"], "content": "Content 1"},
-#     {"title": "Title 2", "abstract": "Abstract 2", "keywords": ["key3", "key4"], "authors": ["author3", "author4"], "content": "Content 2"},
-#     {"title": "Title 3", "abstract": "Abstract 3", "keywords": ["key5", "key6"], "authors": ["author5", "author6"], "content": "Content 3"},
-#     # Add more articles as needed
+from pdf_extraction import extract_article_pdf
+# from adminApp.utils import get_list_extractedFiles
+# Replace with your Elasticsearch server information
+ELASTICSEARCH_HOST = 'http://localhost:9200'
+ELASTICSEARCH_USERNAME = 'elastic'  
+ELASTICSEARCH_PASSWORD = 'nes2504rine'
+INDEX_NAME='articles_index'
+# # Define your list of articles
+# articles = [
+#     {"article_id":1,"title": "Article 1", "content": "This is the content of Article 1.", "author": "John Doe"},
+#     {"article_id":2,"title": "Article 2", "content": "This is the content of Article 2.", "author": "Jane Smith"},
+#     {"article_id":2,"title": "Article 3", "content": "This is the content of Article 2.", "author": "Jane Smith"},
+    
 # ]
 
-# for article_data in articles_data:
-#     ArticleDocument(**article_data).save()
+def index_articles(articles):
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    
+    # Create an index (if not exists)
+    index_name = INDEX_NAME
 
-# from elasticsearch import Elasticsearch
+    # for article in articles:
+    #      es.index(index=index_name, body=article,)
+    # Index each article using article_id as the document ID
+    for article in articles:
+        article_id = article["article_id"]
+        es.index(index=index_name, body=article, id=article_id)
 
-# # Connect to Elasticsearch
-# es = Elasticsearch(['http://localhost:9200'], http_auth=['elastic', 'nes2504rine'])
+def retrieve_all_articles():
+   
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    # Replace 'articles_index' with your actual index name
+    index_name = INDEX_NAME
 
-# def update_document(index, doc_id, new_data):
-#     """
-#     Update a document in the specified index.
+    # Check if the index exists
+    if es.indices.exists(index=index_name):
+        # Use the search API to retrieve all documents
+        search_result = es.search(index=index_name, body={"query": {"match_all": {}}})
 
-#     Parameters:
-#     - index: The index where the document is stored.
-#     - doc_id: The ID of the document to be updated.
-#     - new_data: A dictionary containing the new data to be added or updated in the document.
-#     """
-#     try:
-#         # Use the update API to update the document
-#         es.update(index=index, id=doc_id, body={"doc": new_data})
-#         print(f"Document with ID {doc_id} updated successfully.")
-#     except Exception as e:
-#         print(f"Error updating document: {e}")
+        # Display the retrieved articles
+        for hit in search_result['hits']['hits']:
+            article = hit['_source']
+            print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
+            
+
+def retrieve_all_articles_list():
+    articles=[]
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    # Replace 'articles_index' with your actual index name
+    index_name = INDEX_NAME
+
+    # Check if the index exists
+    if es.indices.exists(index=index_name):
+        # Use the search API to retrieve all documents
+        search_result = es.search(index=index_name, body={"query": {"match_all": {}}})
+
+        # Display the retrieved articles
+        for hit in search_result['hits']['hits']:
+            article = hit['_source']
+            # print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
+            articles.append(article.get('title'))
+    
+    return(articles)   
         
 
+def delete_article_by_custom_id(article_id):
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    # Replace 'articles_index' with your actual index name
+    index_name = INDEX_NAME
+    # Check if the index exists
+    if es.indices.exists(index=index_name):
+        try:
+            # Use the search API to find documents with the specified article_id
+            search_result = es.search(index=index_name, body={
+                "query": {"term": {"article_id": article_id}},
+                "size": 1
+            })
+
+            # Check if any documents were found
+            if search_result['hits']['hits']:
+                document_id = search_result['hits']['hits'][0]['_id']
+
+                # Use the delete API to delete the specified article by ID
+                es.delete(index=index_name, id=document_id)
+                print(f"Article with custom ID {article_id} deleted successfully.")
+            else:
+                print(f"No article found with custom ID {article_id}.")
+        except Exception as e:
+            print(f"Error deleting article with custom ID {article_id}: {e}")
+    else:
+        print(f"Index {index_name} does not exist.")
+
+def retrieve_last_article_id():
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    # Replace 'articles_index' with your actual index name
+    index_name = INDEX_NAME
+
+    # Check if the index exists
+    if es.indices.exists(index=index_name):
+        # Use the search API to retrieve the last article's ID based on the article_id field
+        search_result = es.search(index=index_name, body={
+            "query": {"match_all": {}},
+            "size": 1,
+            "sort": [{"article_id": {"order": "desc"}}]
+        })
+
+        # Extract the last article's ID
+        if search_result['hits']['hits']:
+            last_article_id = search_result['hits']['hits'][0]['_source'].get('article_id')
+            return last_article_id
+        else:
+            print("No articles found.")
+            return None
+    else:
+        print(f"Index {index_name} does not exist.")
+        return None
+
+def add_new_articles(articles):
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    # Replace 'articles_index' with your actual index name
+    index_name = INDEX_NAME
+    # Retrieve the last article's ID
+    last_article_id = retrieve_last_article_id()
+
+    # Use the index API to add the new articles to Elasticsearch
+    try:
+        for article in articles:
+            # Increment the article_id based on the last_article_id
+            article['article_id'] = last_article_id + 1 if last_article_id is not None else 1
+            response = es.index(index=index_name, body=article, id=article['article_id'])
+            print(f"Article added successfully with ID: {response['_id']}")
+            last_article_id = article['article_id']  # Update last_article_id for the next iteration
+    except Exception as e:
+        print(f"Error adding new articles: {e}")
 
 
-# # Connect to Elasticsearch
-# es = Elasticsearch(['http://localhost:9200'])
 
-# def update_article(index, doc_id, new_data):
-#     # Get the existing document
-#     existing_doc = ArticleDocument.get(index=index, id=doc_id)
+def update_article_by_custom_id(article_id, updated_fields):
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    # Replace 'articles_index' with your actual index name
+    index_name = INDEX_NAME
 
-#     # Update the document fields
-#     for field, value in new_data.items():
-#         setattr(existing_doc, field, value)
+    # Check if the index exists
+    if es.indices.exists(index=index_name):
+        try:
+            # Use the search API to find documents with the specified article_id
+            search_result = es.search(index=index_name, body={
+                "query": {"term": {"article_id": article_id}},
+                "size": 1
+            })
 
-#     # Save the updated document
-#     existing_doc.save()
-#     print(f"Article with ID {doc_id} updated successfully.")
-# articles_data = [
-#     {"title": "Title 1", "abstract": "Abstract 1", "keywords": ["key1", "key2"], "authors": ["author1", "author2"], "content": "Content 1"},
-#     {"title": "Title 2", "abstract": "Abstract 2", "keywords": ["key3", "key4"], "authors": ["author3", "author4"], "content": "Content 2"},
-#     {"title": "Title 3", "abstract": "Abstract 2", "keywords": ["key3", "key4"], "authors": ["author3", "author4"], "content": "Content 2"},
-#     # Add more articles as needed
-# ]  
-# def add_article(index, article_data):
-#     # Create a new ArticleDocument instance
-#     new_article = ArticleDocument(**article_data)
+            # Check if any documents were found
+            if search_result['hits']['hits']:
+                document_id = search_result['hits']['hits'][0]['_id']
 
-#     # Save the new document
-#     new_article.save()
-#     print(f"New article added successfully.")
-
-# # Example usage:
-# new_article_data = {
-#     "title": "New Title",
-#     "abstract": "New Abstract",
-#     "keywords": ["new_key1", "new_key2"],
-#     "authors": ["new_author1", "new_author2"],
-#     "content": "New Content"
-# }
-# add_article(index='article', article_data=new_article_data)
-
-def delete_article(index, doc_id):
-    # Get the existing document
-    existing_doc = ArticleDocument.get(index=index, id=doc_id)
-
-    # Delete the document
-    existing_doc.delete()
-    print(f"Article with ID {doc_id} deleted successfully.")
-
-# Example usage:
-delete_article(index='article_index', doc_id='CqAJvYwBFg6TbgZinlaX')
+                # Use the update API to update the specified fields in the article by ID
+                es.update(index=index_name, id=document_id, body={
+                    "doc": updated_fields
+                })
+                print(f"Article with custom ID {article_id} updated successfully.")
+            else:
+                print(f"No article found with custom ID {article_id}.")
+        except Exception as e:
+            print(f"Error updating article with custom ID {article_id}: {e}")
+    else:
+        print(f"Index {index_name} does not exist.")
 
 
-# # Example usage:
-# update_data = {"title": "Updated Title", "abstract": "Updated Abstract"}
-# update_article(index='article_index', doc_id='CqAJvYwBFg6TbgZinlaX', new_data=update_data)
 
+def delete_index(index_name):
+    
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    
+    # Check if the index exists
+    if es.indices.exists(index=index_name):
+        try:
+            # Use the delete API to delete the specified index
+            es.indices.delete(index=index_name)
+            print(f"Index {index_name} deleted successfully.")
+        except Exception as e:
+            print(f"Error deleting index {index_name}: {e}")
+    else:
+        print(f"Index {index_name} does not exist.")
 
-# # Example of updating a document with ID '1' in the 'article_index'
-# update_data = {"references": "New Value", "title": "title 6"}
-# update_document(index='article_index', doc_id='1', new_data=update_data)
+if __name__ == "__main__":
+    articles=retrieve_all_articles_list()
+    print(articles)
+#     # url = "https://drive.google.com/drive/folders/1ZS68gD61U0ZOUkfj0GFcCHYqsHDVv4NX"
+#     # articles=get_list_extractedFiles(url)
+#     pdf_path='article_03.pdf'
+#     article=extract_article_pdf(pdf_path)
+#     article['article_id']=3
+#     articles=[]
+#     print(article)
+#     articles.append(article)
+  
+#     print(len(articles))
+#     index_articles(articles)
+       
