@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 
-from pdf_extraction import extract_article_pdf
+from .pdf_extraction import extract_article_pdf
 # from adminApp.utils import get_list_extractedFiles
 # Replace with your Elasticsearch server information
 ELASTICSEARCH_HOST = 'http://localhost:9200'
