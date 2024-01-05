@@ -57,15 +57,28 @@ INSTALLED_APPS = [
     'userApp',
     'moderatorApp',
     'adminApp',
+    'article_processing',
     'rest_framework',
+    'django_elasticsearch_dsl',
     'rest_framework_simplejwt',
+
+    'django_extensions',
+
     'rest_framework_simplejwt.token_blacklist',
     "corsheaders",
+
 ]
 AUTH_USER_MODEL = 'authenticationApp.CustomUser'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+# Elasticsearch settings
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'http://localhost:9200',  #  the Elasticsearch server address
+        'http_auth': ('elastic', 'nes2504rine'),
+    },
+}
 
 
 REST_FRAMEWORK = {

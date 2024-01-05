@@ -25,7 +25,8 @@ urlpatterns = [
     path('',include('authenticationApp.urls')),
     path('manage/',include('adminApp.urls')),
     path('moderate/',include('moderatorApp.urls')),
-    
+    path('article_processing/',include('article_processing.urls')),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

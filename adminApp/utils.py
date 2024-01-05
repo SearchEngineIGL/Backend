@@ -1,6 +1,10 @@
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+from .pdf_extraction import extract_article_pdf
 import random
 from django.core.mail import EmailMessage
-from .models import CustomUser   
+# from .models import CustomUser   
+# from ..article_processing.pdf_extraction import extract_article_pdf
 
 def send_moderator_email(data):
     email=EmailMessage(
@@ -28,3 +32,61 @@ def send_moderator_email_delete(email):
         to=[email],
     )
     email.send()
+    
+"""_Function to get the id of a google drive folder_
+"""
+def extraire_id_dossier_google_drive(url):
+    if "drive.google.com" in url and "/folders/" in url:
+        debut_id = url.find("/folders/") + len("/folders/")
+        fin_id = url.find("/", debut_id)
+        if fin_id == -1:
+            fin_id = None
+        dossier_id = url[debut_id:fin_id]
+        return dossier_id
+    else:
+        print("URL invalide. Assurez-vous qu'il s'agit d'un lien vers un dossier Google Drive.")
+        return None
+
+"""_Function to get all the pdf files existing in  google drive folder_
+"""
+def lister_fichiers_dans_Drive(folder_id):
+    gauth = GoogleAuth()
+    gauth.LocalWebserverAuth()  # Authentification via un serveur Web local
+    drive = GoogleDrive(gauth)
+
+    # Liste des fichiers dans le dossier spécifié
+    folder_files = drive.ListFile({'q': f"'{folder_id}' in parents and trashed=false"}).GetList()
+
+    return folder_files
+
+
+
+def get_list_extractedFiles(link):
+ list_articles=[]
+ dossier_id = extraire_id_dossier_google_drive(link)
+
+ if dossier_id:
+    print(f"ID du dossier Google Drive extrait : {dossier_id}")
+ else:
+    print("Impossible d'extraire l'ID du dossier Google Drive.")
+
+ liste_fichiers = lister_fichiers_dans_Drive(dossier_id)   
+ if liste_fichiers:
+    
+    # print("Liste des fichiers dans le dossier :")
+    for fichier in liste_fichiers:
+        # Use 'webContentLink' for direct download link
+        pdf_url = fichier['webContentLink']
+        print(pdf_url)
+        result=extract_article_pdf(pdf_url)
+        list_articles.append(result)       
+ else:
+    print("Aucun fichier trouvé dans le dossier.")
+ return(list_articles)
+
+
+
+# Main
+url = "https://drive.google.com/drive/folders/1ZS68gD61U0ZOUkfj0GFcCHYqsHDVv4NX"   
+listes=get_list_extractedFiles(url)
+print(len(listes))
