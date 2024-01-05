@@ -1,3 +1,4 @@
+
 #to install this requirements.txt tap this command pip install -r requirements.txt 
 asgiref==3.3.1
 certifi==2020.12.5
@@ -10,3 +11,10 @@ pytz==2020.5
 six==1.15.0
 sqlparse==0.4.1
 urllib3==1.26.2
+
+
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
+Pillow==10.1.0
+PyJWT==2.3.0
+rest-framework-simplejwt==0.0.2

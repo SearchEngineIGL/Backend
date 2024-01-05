@@ -22,6 +22,7 @@ def welcomeAdmin(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def create_moderator(request):
+    
     if request.method == 'POST':
         serializer=CreateModeratorserializer(data=request.data)
         if serializer.is_valid():
@@ -43,14 +44,18 @@ def list_of_moderators(request):
         return Response(serializer.data)
     
     
-@api_view(['PUT'])
+@api_view(['PUT','GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def MAJ_moderator(request,id):
+    try: 
+        user=CustomUser.objects.get(id=id)
+    except CustomUser.DoesNotExist():
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method=='GET':
+        serializer = CustomUserSerializer(user)
+        return Response(serializer.data)
     if request.method=='PUT':
-        try: 
-            user=CustomUser.objects.get(id=id)
-        except CustomUser.DoesNotExist():
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        
         serializer=CustomUserSerializer(user,request.data)
         if serializer.is_valid():
             serializer.save()
@@ -74,17 +79,23 @@ def Delete_moderator(request,id):
             
 
 
-@api_view(['PUT'])
+@api_view(['PUT','GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def AdminSettings(request):
+    admin_user=request.user
+    if request.method == 'GET':
+        serializer = ModifyAdminSerializer(admin_user)
+        return Response(serializer.data)
+
     if request.method=='PUT':
-        admin_user=CustomUser.objects.get(user_type='admin')
-        id=admin_user.id
+        admin_user=request.user
         data=request.data
-        data['id']=id
         serializer=ModifyAdminSerializer(admin_user,data)
+        
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            print(request.data)
+            return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
+        
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         

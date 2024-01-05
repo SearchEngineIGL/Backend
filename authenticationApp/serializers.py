@@ -9,12 +9,15 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import smart_str,smart_bytes,force_str
 from django.urls import reverse
 from .utils import send_normal_email
+from rest_framework_simplejwt.tokens import RefreshToken,Token
+from rest_framework_simplejwt.exceptions import TokenError
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model=CustomUser
         fields=('id','username','email','password')
         extra_kwargs={'password':{'write_only':True}}
+        
     def create(self,validated_data):
         user=CustomUser.objects.create_user(email=validated_data['email'],username=validated_data['username'],password=validated_data['password'],user_type="simple")
         return user
@@ -23,7 +26,10 @@ class RegisterSerializer(serializers.ModelSerializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model=CustomUser
-        fields=('id','username','email')
+        fields=('id','username','email','PhoneNumber','FullName','photo')
+        extra_kwargs={'FullName':{'required':False},
+                      'PhoneNumber':{'required':False},
+                      'photo':{'required':False}}
         
         
  
@@ -49,6 +55,7 @@ class LoginSerializer(serializers.ModelSerializer):
         
         return{
             'email':user.email,
+            'user_type':user.user_type,
             'access_token':str(user_tokens.get('access')),
             'refresh_token':str(user_tokens.get('refresh')),
         }
@@ -66,7 +73,7 @@ class PasswordResetRequestSerializer(serializers.Serializer):
             uidb64=urlsafe_base64_encode(smart_bytes(user.id))# we try to code user id into string tha we can read
             token=PasswordResetTokenGenerator().make_token(user)
             request =self.context.get('request')
-            site_domain=get_current_site(request).domain
+            site_domain="http://localhost:5173"
             print('ablaaa')
             relative_link = reverse('password-reset-confirm', kwargs={'uidb64': uidb64, 'token': token})
             abslink=f"http://{site_domain}{relative_link}"
@@ -103,3 +110,20 @@ class SetNewPasswordSerializer(serializers.Serializer):
         except Exception as e:
             return AuthenticationFailed("Link is invalid or has expired !")
                 
+class LogoutUserSerializer(serializers.Serializer):
+    refresh_token=serializers.CharField()
+    
+    default_error_messages={
+        'bad_token':('Token is invalid or has expired')
+    }
+    
+    def validate(self,attrs):
+        self.token=attrs.get('refresh_token')
+        return attrs
+    
+    def save(self, **kwargs):
+        try:
+            token=RefreshToken(self.token)
+            token.blacklist()
+        except TokenError:
+            return self.fail('bad_token')

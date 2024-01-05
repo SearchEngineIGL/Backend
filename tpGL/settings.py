@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +38,7 @@ EMAIL_HOST_USER = 'enginesearch865@gmail.com'
 EMAIL_HOST_PASSWORD = 'bwif wdil zkfn atbp'
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
@@ -60,7 +61,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_elasticsearch_dsl',
     'rest_framework_simplejwt',
+
     'django_extensions',
+
+    'rest_framework_simplejwt.token_blacklist',
+    "corsheaders",
+
 ]
 AUTH_USER_MODEL = 'authenticationApp.CustomUser'
 AUTHENTICATION_BACKENDS = [
@@ -83,8 +89,9 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -110,6 +117,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tpGL.wsgi.application'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'profile_pictures/'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -163,3 +172,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_USE_JWT = True
+
+CORS_ALLOW_ALL_ORIGINS=True
