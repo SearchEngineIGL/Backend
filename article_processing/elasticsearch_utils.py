@@ -89,6 +89,7 @@
 #     index_article(pdf_name, article_info)
 from elasticsearch_dsl.connections import connections
 from elasticsearch_documents import ArticleDocument
+from elasticsearch_dsl import Search
 
 es = connections.create_connection(hosts=['http://localhost:9200'], http_auth= ['elastic', 'nes2504rine'],)
 
@@ -185,3 +186,47 @@ delete_article(index='article_index', doc_id='CqAJvYwBFg6TbgZinlaX')
 # # Example of updating a document with ID '1' in the 'article_index'
 # update_data = {"references": "New Value", "title": "title 6"}
 # update_document(index='article_index', doc_id='1', new_data=update_data)
+
+
+
+
+
+
+
+def search(data):
+    if __name__ == "__main__":
+         res=Search(index=index_name).using(client).query("multi_match",fuzziness="AUTO",query=data)
+    return res
+
+
+def filtrer(criterias , articles ):
+     result =None 
+# test2.query("match", fam_name="dehili").execute()
+     if (criterias != None ) :
+        if( "title" in criterias)  :
+               result=articles.query("match", title=criterias["title"])
+        if("abstract" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", abstract=criterias["abstract"]))
+                else :
+                  result=(articles.query("match", abstract=criterias["abstract"]))    
+        if("keywords" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", keywords=criterias["keywords"]))
+                else :
+                 result=(articles.query("match", keywords=criterias["keywords"]))
+        if("authors" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", authors=criterias["authors"]))
+                else :
+                 result=(articles.query("match", authors=criterias["authors"]))
+        if("content" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", content=criterias["content"]))
+                else :
+                 result=(articles.query("match", content=criterias["content"]))
+
+                 
+        return result
+     else :
+        return articles
