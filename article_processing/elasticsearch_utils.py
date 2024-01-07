@@ -1,5 +1,7 @@
 from elasticsearch import Elasticsearch
-
+from elasticsearch_dsl.connections import connections
+from elasticsearch_documents import ArticleDocument
+from elasticsearch_dsl import Search
 from .pdf_extraction import extract_article_pdf
 # from adminApp.utils import get_list_extractedFiles
 # Replace with your Elasticsearch server information
@@ -7,6 +9,7 @@ ELASTICSEARCH_HOST = 'http://localhost:9200'
 ELASTICSEARCH_USERNAME = 'elastic'  
 ELASTICSEARCH_PASSWORD = 'nes2504rine'
 INDEX_NAME='articles_index'
+es = connections.create_connection(hosts=['http://localhost:9200'], http_auth= ['elastic', 'nes2504rine'],)
 # # Define your list of articles
 # articles = [
 #     {"article_id":1,"title": "Article 1", "content": "This is the content of Article 1.", "author": "John Doe"},
@@ -203,18 +206,44 @@ def give_article(article_id):
 
 
 
-# if __name__ == "__main__":
-#     articles=retrieve_all_articles_list()
-#     print(articles)
-#     # url = "https://drive.google.com/drive/folders/1ZS68gD61U0ZOUkfj0GFcCHYqsHDVv4NX"
-#     # articles=get_list_extractedFiles(url)
-#     pdf_path='article_03.pdf'
-#     article=extract_article_pdf(pdf_path)
-#     article['article_id']=3
-#     articles=[]
-#     print(article)
-#     articles.append(article)
-  
-#     print(len(articles))
-#     index_articles(articles)
-       
+
+
+
+def search(data):
+    if __name__ == "__main__":
+         res=Search(index=INDEX_NAME).using(client).query("multi_match",fuzziness="AUTO",query=data)
+    return res
+
+
+def filtrer(criterias , articles ):
+     result =None 
+# test2.query("match", fam_name="dehili").execute()
+     if (criterias != None ) :
+        if( "title" in criterias)  :
+               result=articles.query("match", title=criterias["title"])
+        if("abstract" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", abstract=criterias["abstract"]))
+                else :
+                  result=(articles.query("match", abstract=criterias["abstract"]))    
+        if("keywords" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", keywords=criterias["keywords"]))
+                else :
+                 result=(articles.query("match", keywords=criterias["keywords"]))
+        if("authors" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", authors=criterias["authors"]))
+                else :
+                 result=(articles.query("match", authors=criterias["authors"]))
+        if("content" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", content=criterias["content"]))
+                else :
+                 result=(articles.query("match", content=criterias["content"]))
+
+                 
+        return result
+     else :
+        return articles
+
