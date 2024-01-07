@@ -60,7 +60,7 @@ def retrieve_all_articles_list():
         for hit in search_result['hits']['hits']:
             article = hit['_source']
             # print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
-            articles.append(article.get('title'))
+            articles.append(article)
     
     return(articles)   
         
@@ -185,6 +185,7 @@ def delete_index(index_name):
         print(f"Index {index_name} does not exist.")
 
 if __name__ == "__main__":
+    
     articles=retrieve_all_articles_list()
     print(articles)
 #     # url = "https://drive.google.com/drive/folders/1ZS68gD61U0ZOUkfj0GFcCHYqsHDVv4NX"

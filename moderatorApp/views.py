@@ -10,7 +10,7 @@ from authenticationApp.utils import *
 from .permissions import *
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
-
+from article_processing.elasticsearch_utils import *
 
 
 @api_view(['GET'])
@@ -35,3 +35,29 @@ def ModeratorSettings(request):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated,IsModeratorUser])
+def display_articles_for_correction(request):
+    if request.method =='GET':
+        articles = retrieve_all_articles_list()
+        return Response(articles,status=status.HTTP_200_OK)
+
+
+def CorrectionArticle(request,article_id):
+  existing_articles = retrieve_all_articles_list()  # Retrieve all articles or filter as needed
+  existing_article = None
+  for article in existing_articles:
+        if article.get('article_id') == article_id:
+            existing_article = article
+            break
+        update_article_by_custom_id(article_id,any)
+
+
+def deleteArticle(request,article_id):
+
+  delete_article_by_custom_id(article_id)
+
+    
