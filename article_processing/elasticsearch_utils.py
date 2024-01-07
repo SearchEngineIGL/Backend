@@ -28,21 +28,21 @@ def index_articles(articles):
         article_id = article["article_id"]
         es.index(index=index_name, body=article, id=article_id)
 
-def retrieve_all_articles():
+# def retrieve_all_articles():
    
-    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
-    # Replace 'articles_index' with your actual index name
-    index_name = INDEX_NAME
+#     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+#     # Replace 'articles_index' with your actual index name
+#     index_name = INDEX_NAME
 
-    # Check if the index exists
-    if es.indices.exists(index=index_name):
-        # Use the search API to retrieve all documents
-        search_result = es.search(index=index_name, body={"query": {"match_all": {}}})
+#     # Check if the index exists
+#     if es.indices.exists(index=index_name):
+#         # Use the search API to retrieve all documents
+#         search_result = es.search(index=index_name, body={"query": {"match_all": {}}})
 
-        # Display the retrieved articles
-        for hit in search_result['hits']['hits']:
-            article = hit['_source']
-            print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
+#         # Display the retrieved articles
+#         for hit in search_result['hits']['hits']:
+#             article = hit['_source']
+#             print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
             
 
 def retrieve_all_articles_list():
@@ -60,7 +60,7 @@ def retrieve_all_articles_list():
         for hit in search_result['hits']['hits']:
             article = hit['_source']
             # print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
-            articles.append(article.get('title'))
+            articles.append(article.get("title"))
     
     return(articles)   
         
@@ -183,10 +183,29 @@ def delete_index(index_name):
             print(f"Error deleting index {index_name}: {e}")
     else:
         print(f"Index {index_name} does not exist.")
+        
+        
+def give_article(article_id):
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST, basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD])
+    index_name = INDEX_NAME
 
-if __name__ == "__main__":
-    articles=retrieve_all_articles_list()
-    print(articles)
+    # Check if the index exists
+    if es.indices.exists(index=index_name):
+        # Use the get API to retrieve the document by ID
+        try:
+            result = es.get(index=index_name, id=article_id)
+            article = result['_source']
+            return article
+        except Exception as e:
+            print(f"Error retrieving article with ID {article_id}: {e}")
+    
+    return None
+
+
+
+# if __name__ == "__main__":
+#     articles=retrieve_all_articles_list()
+#     print(articles)
 #     # url = "https://drive.google.com/drive/folders/1ZS68gD61U0ZOUkfj0GFcCHYqsHDVv4NX"
 #     # articles=get_list_extractedFiles(url)
 #     pdf_path='article_03.pdf'
