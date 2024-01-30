@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl.connections import connections
-from elasticsearch_documents import ArticleDocument
+
 from elasticsearch_dsl import Search
 from .pdf_extraction import extract_article_pdf
 # from adminApp.utils import get_list_extractedFiles

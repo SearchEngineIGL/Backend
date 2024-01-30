@@ -208,10 +208,10 @@ def extract_article_pdf(pdf_path):
      
 
 
-# Example usage
-pdf_path = 'article_01.pdf'
-article_data = extract_article_pdf(pdf_path)
+# # Example usage
+# pdf_path = 'article_01.pdf'
+# article_data = extract_article_pdf(pdf_path)
 
 
-# for key, value in article_data.items():
-#     print(f"{key}: {value}")
+# # for key, value in article_data.items():
+# #     print(f"{key}: {value}")
