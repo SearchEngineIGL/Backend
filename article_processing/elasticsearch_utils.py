@@ -62,8 +62,13 @@ def retrieve_all_articles_list():
         # Display the retrieved articles
         for hit in search_result['hits']['hits']:
             article = hit['_source']
-            # print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
-            articles.append(article.get("title"))
+            article_id = hit['_id']  # Retrieve the article ID
+            article_title = article.get('title')
+            state = article.get('state')  # Assuming there is a field named 'status'
+
+            # Add the article details to the list
+            articles.append({"article_id": article_id, "article_title": article_title,"state": state})
+
     
     return(articles)   
         
@@ -247,3 +252,22 @@ def filtrer(criterias , articles ):
      else :
         return articles
 
+
+
+articles=[]
+pdf_path='Article_01.pdf'
+article=extract_article_pdf(pdf_path)
+
+article['article_id']=3
+
+print(article)
+articles.append(article)
+pdf_path='Article_02.pdf'
+article=extract_article_pdf(pdf_path)
+
+article['article_id']=2
+
+print(article)
+articles.append(article)
+print(len(articles))
+index_articles(articles)
