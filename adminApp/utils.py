@@ -70,7 +70,8 @@ def get_list_extractedFiles(link):
  else:
     print("Impossible d'extraire l'ID du dossier Google Drive.")
 
- liste_fichiers = lister_fichiers_dans_Drive(dossier_id)   
+ liste_fichiers = lister_fichiers_dans_Drive(dossier_id)  
+ article_id=1 
  if liste_fichiers:
     
     # print("Liste des fichiers dans le dossier :")
@@ -78,7 +79,8 @@ def get_list_extractedFiles(link):
         # Use 'webContentLink' for direct download link
         pdf_url = fichier['webContentLink']
         print(pdf_url)
-        result=extract_article_pdf(pdf_url)
+        result=extract_article_pdf(pdf_url,article_id)
+        article_id+1
         list_articles.append(result)       
  else:
     print("Aucun fichier trouvé dans le dossier.")

@@ -3,6 +3,7 @@ from .models import *
 from authenticationApp.managers import *
 from authenticationApp.serializers import *
 from .utils import *
+from article_processing.elasticsearch_utils import *
 class CreateModeratorserializer(serializers.ModelSerializer):
     class Meta:
         model=CustomUser
@@ -49,19 +50,23 @@ class ModifyAdminSerializer(serializers.ModelSerializer):
     
     
    
-class GetUrlserializer(serializers.Serializer):
-    link = serializers.CharField(max_length=255) 
-    # class Meta:
-    #     # model=CustomUser
-    #     # fields=('id','FullName','username','email','PhoneNumber','photo')
-    #     # extra_kwargs={'password':{'write_only':True},
-    #     #               'FullName':{'required':False},
-    #     #               'PhoneNumber':{'required':False}}
-    def validate(self,attrs):
-            link=attrs.get('link')
-            # list_articles = get_list_extractedFiles(link)
-            print("link")
-            # index_articles(list_articles)
+
+
+class GetUrlSerializer(serializers.Serializer):
+    link = serializers.CharField(max_length=255)
+
+    def validate(self, attrs):
+        print("---------------------------------------")
+        link = attrs.get('link')
+        print('ablus')
+        print(link)
+        list_articles = get_list_extractedFiles(link)
+        print("--------------------------------- list ----------------------------")
+        print(list_articles)
+        index_articles(list_articles)
+        # Additional validation or processing logic can be added here
+        return attrs  # Don't forget to return the validated data
+
 
 # serializers.py
 # from rest_framework import serializers

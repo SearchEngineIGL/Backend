@@ -89,13 +89,14 @@ def AdminSettings(request):
         return Response(serializer.data)
 
     if request.method=='PUT':
+        
         admin_user=request.user
         data=request.data
         serializer=ModifyAdminSerializer(admin_user,data)
         
         if serializer.is_valid():
             serializer.save()
-            print(request.data)
+            
             return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
         
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
@@ -119,11 +120,12 @@ def AdminSettings(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdminUser])
 def get_articles(request):
+    
     if request.method == 'POST':
-        serializers=GetUrlserializer(data=request.data)
+        serializer=GetUrlSerializer(data=request.data)
         
-        serializers.is_valid(raise_exception=True)
-        serializers.save()
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response({'message':"correct link"},status=status.HTTP_200_OK)
     return Response({'message': 'Invalid request method'}, status=400)
 

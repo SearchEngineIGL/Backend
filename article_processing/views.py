@@ -27,3 +27,5 @@ def welcomeElasticSearch(request):
 #     else:
 #         print(f"Failed to index document with ID: {article_id}")
 
+
+

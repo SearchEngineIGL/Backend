@@ -168,7 +168,7 @@ def extract_sections(text,title):
 """__Function to read the pdf file and extract all th information needed
      __
  """
-def extract_article_pdf(pdf_path):
+def extract_article_pdf(pdf_path,article_id):
       # Fetch PDF content from the URL
      response = requests.get(pdf_path)
     
@@ -199,6 +199,7 @@ def extract_article_pdf(pdf_path):
      institutions , authors, abstract, keywords, content, references = extract_sections(text,Title)
       # Create a dictionary
      article_data = {
+        "article_id":article_id,
         "title":Title,
         "institutions": institutions,
         "authors": authors,
@@ -206,7 +207,8 @@ def extract_article_pdf(pdf_path):
         "keywords": keywords,
         "content": content,
         "references": references,
-        "state":"pending"
+        "state":"pending",
+        "url":pdf_path,
      }
      # Return the dictionary
      return article_data

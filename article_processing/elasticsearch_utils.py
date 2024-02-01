@@ -215,42 +215,42 @@ def give_article(article_id):
 
 
 # def search(data):
-#     if __name__ == "__main__":
-#          res=Search(index=INDEX_NAME).using(client).query("multi_match",fuzziness="AUTO",query=data)
-#     return res
+#     # if __name__ == "__main__":
+#     #      res=Search(index=INDEX_NAME).using(client).query("multi_match",fuzziness="AUTO",query=data)
+#     # return res
 
 
-# def filtrer(criterias , articles ):
-#      result =None 
-# # test2.query("match", fam_name="dehili").execute()
-#      if (criterias != None ) :
-#         if( "title" in criterias)  :
-#                result=articles.query("match", title=criterias["title"])
-#         if("abstract" in criterias ) :
-#                 if(result!=None) :
-#                    result=(result.query("match", abstract=criterias["abstract"]))
-#                 else :
-#                   result=(articles.query("match", abstract=criterias["abstract"]))    
-#         if("keywords" in criterias ) :
-#                 if(result!=None) :
-#                    result=(result.query("match", keywords=criterias["keywords"]))
-#                 else :
-#                  result=(articles.query("match", keywords=criterias["keywords"]))
-#         if("authors" in criterias ) :
-#                 if(result!=None) :
-#                    result=(result.query("match", authors=criterias["authors"]))
-#                 else :
-#                  result=(articles.query("match", authors=criterias["authors"]))
-#         if("content" in criterias ) :
-#                 if(result!=None) :
-#                    result=(result.query("match", content=criterias["content"]))
-#                 else :
-#                  result=(articles.query("match", content=criterias["content"]))
+def filtrer(criterias , articles ):
+     result =None 
+# test2.query("match", fam_name="dehili").execute()
+     if (criterias != None ) :
+        if( "title" in criterias)  :
+               result=articles.query("match", title=criterias["title"])
+        if("abstract" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", abstract=criterias["abstract"]))
+                else :
+                  result=(articles.query("match", abstract=criterias["abstract"]))    
+        if("keywords" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", keywords=criterias["keywords"]))
+                else :
+                 result=(articles.query("match", keywords=criterias["keywords"]))
+        if("authors" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", authors=criterias["authors"]))
+                else :
+                 result=(articles.query("match", authors=criterias["authors"]))
+        if("content" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", content=criterias["content"]))
+                else :
+                 result=(articles.query("match", content=criterias["content"]))
 
                  
-#         return result
-#      else :
-#         return articles
+        return result
+     else :
+        return articles
 
 
 
