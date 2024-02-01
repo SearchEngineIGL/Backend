@@ -11,6 +11,7 @@ from .permissions import *
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from article_processing.elasticsearch_utils import *
+from article_processing.elasticsearch_utils import *
 
 
 @api_view(['GET'])
