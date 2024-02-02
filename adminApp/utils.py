@@ -1,8 +1,15 @@
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
-from .pdf_extraction import extract_article_pdf
+from .pdf_extraction import *
+from article_processing.elasticsearch_utils import *
 import random
+from elasticsearch import Elasticsearch
 from django.core.mail import EmailMessage
+ELASTICSEARCH_HOST = 'http://localhost:9200'
+ELASTICSEARCH_USERNAME = 'elastic'  
+ELASTICSEARCH_PASSWORD = 'nes2504rine'
+INDEX_NAME='articles_index'
+
 # from .models import CustomUser   
 # from ..article_processing.pdf_extraction import extract_article_pdf
 
@@ -56,9 +63,17 @@ def lister_fichiers_dans_Drive(folder_id):
 
     # Liste des fichiers dans le dossier spécifié
     folder_files = drive.ListFile({'q': f"'{folder_id}' in parents and trashed=false"}).GetList()
+    
 
     return folder_files
 
+def get_next_article_id(es, index_name):
+    # Get the count of existing articles in Elasticsearch
+    count_response = es.count(index=index_name)
+    existing_articles_count = count_response["count"]
+
+    # Return the next available article ID (increment by 1)
+    return existing_articles_count + 1
 
 
 def get_list_extractedFiles(link):
@@ -70,15 +85,29 @@ def get_list_extractedFiles(link):
  else:
     print("Impossible d'extraire l'ID du dossier Google Drive.")
 
- liste_fichiers = lister_fichiers_dans_Drive(dossier_id)   
+ liste_fichiers = lister_fichiers_dans_Drive(dossier_id)  
+ article_id=retrieve_last_article_id()
+ print(type(article_id))
+ print(article_id)
+ print('--------*-----------*')
+ if article_id==None:
+     article_id=1
+ else:
+    article_id = str(int(article_id) + 1)
+    
+ 
  if liste_fichiers:
     
     # print("Liste des fichiers dans le dossier :")
     for fichier in liste_fichiers:
         # Use 'webContentLink' for direct download link
         pdf_url = fichier['webContentLink']
+        print('-----------------------------------------')
         print(pdf_url)
-        result=extract_article_pdf(pdf_url)
+        print(article_id)
+        print('-----------------------------------------')
+        result=extract_article_pdf2(pdf_path=pdf_url,article_id=article_id)
+        article_id = str(int(article_id) + 1)
         list_articles.append(result)       
  else:
     print("Aucun fichier trouvé dans le dossier.")
@@ -86,7 +115,8 @@ def get_list_extractedFiles(link):
 
 
 
+
+
 # # Main
 # url = "https://drive.google.com/drive/folders/1ZS68gD61U0ZOUkfj0GFcCHYqsHDVv4NX"   
 # listes=get_list_extractedFiles(url)
-# print(len(listes))

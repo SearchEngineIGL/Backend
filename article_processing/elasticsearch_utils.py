@@ -27,6 +27,7 @@ def index_articles(articles):
     # for article in articles:
     #      es.index(index=index_name, body=article,)
     # Index each article using article_id as the document ID
+    print(articles)
     for article in articles:
         article_id = article["article_id"]
         es.index(index=index_name, body=article, id=article_id)
@@ -57,17 +58,17 @@ def retrieve_all_articles_list():
     # Check if the index exists
     if es.indices.exists(index=index_name):
         # Use the search API to retrieve all documents
-        search_result = es.search(index=index_name, body={"query": {"match_all": {}}})
-
+        search_result = es.search(index=index_name, body={"query": {"match": {"state": "pending"}}})
         # Display the retrieved articles
         for hit in search_result['hits']['hits']:
             article = hit['_source']
             article_id = hit['_id']  # Retrieve the article ID
             article_title = article.get('title')
             state = article.get('state')  # Assuming there is a field named 'status'
+            url = article.get('url')  # Assuming there is a field named 'status'
 
             # Add the article details to the list
-            articles.append({"article_id": article_id, "article_title": article_title,"state": state})
+            articles.append({"article_id": article_id, "article_title": article_title,"state": state,"url":url})
 
     
     return(articles)   
@@ -214,60 +215,76 @@ def give_article(article_id):
 
 
 
-# def search(data):
-#     if __name__ == "__main__":
-#          res=Search(index=INDEX_NAME).using(client).query("multi_match",fuzziness="AUTO",query=data)
-#     return res
+def search(data):
+         #res=Search(index=INDEX_NAME).using(client).query("multi_match",fuzziness="AUTO",query=data)
+    res = Search(using=es, index=INDEX_NAME).query("multi_match", fuzziness="AUTO", query=data).filter("term", state="done")
+    return res
 
 
-# def filtrer(criterias , articles ):
-#      result =None 
-# # test2.query("match", fam_name="dehili").execute()
-#      if (criterias != None ) :
-#         if( "title" in criterias)  :
-#                result=articles.query("match", title=criterias["title"])
-#         if("abstract" in criterias ) :
-#                 if(result!=None) :
-#                    result=(result.query("match", abstract=criterias["abstract"]))
-#                 else :
-#                   result=(articles.query("match", abstract=criterias["abstract"]))    
-#         if("keywords" in criterias ) :
-#                 if(result!=None) :
-#                    result=(result.query("match", keywords=criterias["keywords"]))
-#                 else :
-#                  result=(articles.query("match", keywords=criterias["keywords"]))
-#         if("authors" in criterias ) :
-#                 if(result!=None) :
-#                    result=(result.query("match", authors=criterias["authors"]))
-#                 else :
-#                  result=(articles.query("match", authors=criterias["authors"]))
-#         if("content" in criterias ) :
-#                 if(result!=None) :
-#                    result=(result.query("match", content=criterias["content"]))
-#                 else :
-#                  result=(articles.query("match", content=criterias["content"]))
+def filtrer(criterias , articles ):
+     result =None 
+# test2.query("match", fam_name="dehili").execute()
+     if (criterias != None ) :
+        if( "title" in criterias)  :
+               result=articles.query("match", title=criterias["title"])
+        if("abstract" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", abstract=criterias["abstract"]))
+                else :
+                  result=(articles.query("match", abstract=criterias["abstract"]))    
+        if("keywords" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", keywords=criterias["keywords"]))
+                else :
+                 result=(articles.query("match", keywords=criterias["keywords"]))
+        if("authors" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", authors=criterias["authors"]))
+                else :
+                 result=(articles.query("match", authors=criterias["authors"]))
+        if("content" in criterias ) :
+                if(result!=None) :
+                   result=(result.query("match", content=criterias["content"]))
+                else :
+                 result=(articles.query("match", content=criterias["content"]))
 
                  
-#         return result
-#      else :
-#         return articles
+        return result
+     else :
+        return articles
+    
+    
+    
+    
+def publish_article(article_id):
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    # Replace 'articles_index' with your actual index name
+    index_name = INDEX_NAME
+
+    # Check if the index exists
+    if es.indices.exists(index=index_name):
+        try:
+            # Use the search API to find documents with the specified article_id
+            search_result = es.search(index=index_name, body={
+                "query": {"term": {"article_id": article_id}},
+                "size": 1
+            })
+
+            # Check if any documents were found
+            if search_result['hits']['hits']:
+                document_id = search_result['hits']['hits'][0]['_id']
+
+                # Use the update API to update the specified fields in the article by ID
+                es.update(index=index_name, id=document_id, body={
+                    "state":"done"
+                })
+                print(f"Article with custom ID {article_id} updated successfully.")
+            else:
+                print(f"No article found with custom ID {article_id}.")
+        except Exception as e:
+            print(f"Error updating article with custom ID {article_id}: {e}")
+    else:
+        print(f"Index {index_name} does not exist.")
 
 
 
-# articles=[]
-# pdf_path='Article_01.pdf'
-# article=extract_article_pdf(pdf_path)
-
-# article['article_id']=3
-
-# print(article)
-# articles.append(article)
-# pdf_path='Article_02.pdf'
-# article=extract_article_pdf(pdf_path)
-
-# article['article_id']=2
-
-# print(article)
-# articles.append(article)
-# print(len(articles))
-# index_articles(articles)

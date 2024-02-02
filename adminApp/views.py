@@ -13,6 +13,7 @@ from .permissions import *
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
 from .serializers import *
+from article_processing.elasticsearch_utils import *
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
@@ -122,10 +123,13 @@ def AdminSettings(request):
 def get_articles(request):
     
     if request.method == 'POST':
-        serializer=GetUrlSerializer(data=request.data)
+        # serializer=GetUrlSerializer(data=request.data)
+        # serializer.is_valid(raise_exception=True)
+        # serializer.save()
+        link = request.data.get("link")
+        list_articles = get_list_extractedFiles(link)
+        index_articles(list_articles)
         
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
         return Response({'message':"correct link"},status=status.HTTP_200_OK)
     return Response({'message': 'Invalid request method'}, status=400)
 

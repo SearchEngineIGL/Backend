@@ -8,6 +8,7 @@ urlpatterns = [
     path('article/<int:article_id>',views.CorrectionArticle),
 
     path('delete/<int:article_id>',views.deleteArticle),
+    path('publish/<int:article_id>',views.publish_article),
     
 
 
