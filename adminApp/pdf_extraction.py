@@ -180,6 +180,7 @@ def replace_newlines(text):
 """__Function to read the pdf file and extract all th information needed
      __
  """
+
 def extract_article_pdf(pdf_path,article_id):
       # Fetch PDF content from the URL
      response = requests.get(pdf_path)

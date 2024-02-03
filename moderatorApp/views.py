@@ -64,4 +64,10 @@ def deleteArticle(request,article_id):
     delete_article_by_custom_id(article_id)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
- 
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated,IsModeratorUser])
+def publishAricle(request,article_id):
+  if request.method=='PATCH':
+    publish_article(article_id)
+    return Response(status=status.HTTP_200_OK)

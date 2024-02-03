@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl.connections import connections
-from datetime import datetime
+from elasticsearch_dsl import Q
 from elasticsearch_dsl import Search
 # from .pdf_extraction import extract_article_pdf
 # from adminApp.utils import get_list_extractedFiles
@@ -32,10 +32,23 @@ def index_articles(articles):
     for article in articles:
         article_id = article["article_id"]
         es.index(index=index_name, body=article, id=article_id)
-        print("indexing done")
-        
 
+# def retrieve_all_articles():
+   
+#     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+#     # Replace 'articles_index' with your actual index name
+#     index_name = INDEX_NAME
 
+#     # Check if the index exists
+#     if es.indices.exists(index=index_name):
+#         # Use the search API to retrieve all documents
+#         search_result = es.search(index=index_name, body={"query": {"match_all": {}}})
+
+#         # Display the retrieved articles
+#         for hit in search_result['hits']['hits']:
+#             article = hit['_source']
+#             print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
+            
 
 def retrieve_all_articles():
    
@@ -63,17 +76,17 @@ def retrieve_all_articles_list():
     # Check if the index exists
     if es.indices.exists(index=index_name):
         # Use the search API to retrieve all documents
-        search_result = es.search(index=index_name, body={"query": {"match_all": {}}})
-
+        search_result = es.search(index=index_name, body={"query": {"match": {"state": "pending"}}})
         # Display the retrieved articles
         for hit in search_result['hits']['hits']:
             article = hit['_source']
             article_id = hit['_id']  # Retrieve the article ID
             article_title = article.get('title')
             state = article.get('state')  # Assuming there is a field named 'status'
+            url = article.get('url')  # Assuming there is a field named 'status'
 
             # Add the article details to the list
-            articles.append({"article_id": article_id, "article_title": article_title,"state": state})
+            articles.append({"article_id": article_id, "article_title": article_title,"state": state,"url":url})
 
     
     return(articles)   
@@ -214,6 +227,67 @@ def give_article(article_id):
             print(f"Error retrieving article with ID {article_id}: {e}")
     
     return None
+
+
+
+
+
+
+def search(data):
+         #res=Search(index=INDEX_NAME).using(client).query("multi_match",fuzziness="AUTO",query=data)
+    res = Search(using=es, index=INDEX_NAME).query("multi_match", fuzziness="AUTO", query=data).filter("term", state="done")
+    return res
+
+
+
+def filtrer(criterias, articles):
+    result = articles
+
+    if criterias:
+        if "keywords" in criterias:
+            # Use terms query for partial matching of keywords
+            result = result.query(Q("match", keywords={"query": criterias["keywords"], "operator": "OR"}))
+            
+
+        if "authors" in criterias:
+            # Use match query for exact matching of authors
+            result = result.query(Q("match", authors=criterias["authors"]))
+
+    return result
+    
+    
+    
+    
+def publish_article(article_id):
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    # Replace 'articles_index' with your actual index name
+    index_name = INDEX_NAME
+
+    # Check if the index exists
+    if es.indices.exists(index=index_name):
+        try:
+            # Use the search API to find documents with the specified article_id
+            search_result = es.search(index=index_name, body={
+                "query": {"term": {"article_id": article_id}},
+                "size": 1
+            })
+
+            # Check if any documents were found
+            if search_result['hits']['hits']:
+                document_id = search_result['hits']['hits'][0]['_id']
+
+                # Use the update API to update the specified fields in the article by ID
+                es.update(index=index_name, id=document_id, body={
+                    "state":"done"
+                })
+                print(f"Article with custom ID {article_id} updated successfully.")
+            else:
+                print(f"No article found with custom ID {article_id}.")
+        except Exception as e:
+            print(f"Error updating article with custom ID {article_id}: {e}")
+    else:
+        print(f"Index {index_name} does not exist.")
+
 
 
 

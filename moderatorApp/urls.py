@@ -4,9 +4,12 @@ urlpatterns = [
     path('welcomeModerator/',views.welcomeModerator),
     path('settings/',views.ModeratorSettings),
 
+    path('articles/',views.display_articles_for_correction),
+    path('article/<int:article_id>',views.CorrectionArticle),
 
-    path('Articles/',views.display_articles_for_correction),
-    path('correction/',views.CorrectionArticle)
-   
+    path('delete/<int:article_id>',views.deleteArticle),
+    path('publish/<int:article_id>',views.publish_article),
+    
+
 
  ]
