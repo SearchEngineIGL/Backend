@@ -19,7 +19,7 @@ articles = [
     {"article_id":2,"title": "Article 3", "content": "This is the content of Article 2.", "author": "Jane Smith","date":None},
     
 ]
-
+es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
 def index_articles(articles):
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
     print("hello")
