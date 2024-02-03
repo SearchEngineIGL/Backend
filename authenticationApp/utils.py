@@ -1,6 +1,6 @@
 import random
 from django.core.mail import EmailMessage
-from .models import OneTimePassword,CustomUser
+from authenticationApp.models import OneTimePassword,CustomUser
 
 
 

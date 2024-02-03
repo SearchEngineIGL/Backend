@@ -54,22 +54,12 @@ class ModifyAdminSerializer(serializers.ModelSerializer):
 
 class GetUrlSerializer(serializers.Serializer):
     link = serializers.CharField(max_length=255)
-
+    
     def validate(self, attrs):
-        print("---------------------------------------")
         link = attrs.get('link')
-        print('ablus')
-        print(link)
+        print("here2")
         list_articles = get_list_extractedFiles(link)
-        print("--------------------------------- list ----------------------------")
-        print(list_articles)
+        print("here2")
         index_articles(list_articles)
         # Additional validation or processing logic can be added here
         return attrs  # Don't forget to return the validated data
-
-
-# serializers.py
-# from rest_framework import serializers
-
-# class LinkSerializer(serializers.Serializer):
-#     link = serializers.URLField()

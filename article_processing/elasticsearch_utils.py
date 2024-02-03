@@ -1,26 +1,28 @@
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl.connections import connections
-
+from datetime import datetime
 from elasticsearch_dsl import Search
-from .pdf_extraction import extract_article_pdf
+# from .pdf_extraction import extract_article_pdf
 # from adminApp.utils import get_list_extractedFiles
 # Replace with your Elasticsearch server information
 ELASTICSEARCH_HOST = 'http://localhost:9200'
 ELASTICSEARCH_USERNAME = 'elastic'  
 ELASTICSEARCH_PASSWORD = 'nes2504rine'
+# ELASTICSEARCH_HOST = 'http://elasticsearch:9200'
+
 INDEX_NAME='articles_index'
-es = connections.create_connection(hosts=['http://localhost:9200'], http_auth= ['elastic', 'nes2504rine'],)
+# es = connections.create_connection(hosts=['http://localhost:9200'], http_auth= ['elastic', 'nes2504rine'],)
 # # Define your list of articles
-# articles = [
-#     {"article_id":1,"title": "Article 1", "content": "This is the content of Article 1.", "author": "John Doe"},
-#     {"article_id":2,"title": "Article 2", "content": "This is the content of Article 2.", "author": "Jane Smith"},
-#     {"article_id":2,"title": "Article 3", "content": "This is the content of Article 2.", "author": "Jane Smith"},
+articles = [
+    {"article_id":1,"title": "Article 1", "content": "This is the content of Article 1.", "author": "John Doe","date":None},
+    {"article_id":2,"title": "Article 2", "content": "This is the content of Article 2.", "author": "Jane Smith","date":None},
+    {"article_id":2,"title": "Article 3", "content": "This is the content of Article 2.", "author": "Jane Smith","date":None},
     
-# ]
+]
 
 def index_articles(articles):
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
-    
+    print("hello")
     # Create an index (if not exists)
     index_name = INDEX_NAME
 
@@ -30,27 +32,31 @@ def index_articles(articles):
     for article in articles:
         article_id = article["article_id"]
         es.index(index=index_name, body=article, id=article_id)
+        print("indexing done")
+        
 
-# def retrieve_all_articles():
+
+
+def retrieve_all_articles():
    
-#     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
-#     # Replace 'articles_index' with your actual index name
-#     index_name = INDEX_NAME
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    # Replace 'articles_index' with your actual index name
+    index_name = INDEX_NAME
 
-#     # Check if the index exists
-#     if es.indices.exists(index=index_name):
-#         # Use the search API to retrieve all documents
-#         search_result = es.search(index=index_name, body={"query": {"match_all": {}}})
+    # Check if the index exists
+    if es.indices.exists(index=index_name):
+        # Use the search API to retrieve all documents
+        search_result = es.search(index=index_name, body={"query": {"match_all": {}}})
 
-#         # Display the retrieved articles
-#         for hit in search_result['hits']['hits']:
-#             article = hit['_source']
-#             print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
+        # Display the retrieved articles
+        for hit in search_result['hits']['hits']:
+            article = hit['_source']
+            print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
             
 
 def retrieve_all_articles_list():
     articles=[]
-    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,)
     # Replace 'articles_index' with your actual index name
     index_name = INDEX_NAME
 
@@ -165,7 +171,7 @@ def update_article_by_custom_id(article_id, updated_fields):
 
                 # Use the update API to update the specified fields in the article by ID
                 es.update(index=index_name, id=document_id, body={
-                    "doc": updated_fields
+                    "doc": updated_fields,
                 })
                 print(f"Article with custom ID {article_id} updated successfully.")
             else:
@@ -211,63 +217,25 @@ def give_article(article_id):
 
 
 
+def get_articles_ordered_by_date():
+    es = Elasticsearch(hosts=ELASTICSEARCH_HOST, basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD])
+    index_name = INDEX_NAME
 
 
+    try:
+        # Use the search API to retrieve articles ordered by the 'date' field
+        search_result = es.search(
+            index=index_name,
+            body={
+                "query": {"match_all": {}},
+                "sort": [{"date": {"order": "desc"}}]  # Sort by 'date' field in descending order
+            }
+        )
 
-# def search(data):
-#     # if __name__ == "__main__":
-#     #      res=Search(index=INDEX_NAME).using(client).query("multi_match",fuzziness="AUTO",query=data)
-#     # return res
+        # Access the sorted articles in the search_result
+        sorted_articles = search_result['hits']['hits']
 
+        print('Articles ordered by date:', sorted_articles)
+    except Exception as e:
+        print(f"Error retrieving articles: {e}")
 
-def filtrer(criterias , articles ):
-     result =None 
-# test2.query("match", fam_name="dehili").execute()
-     if (criterias != None ) :
-        if( "title" in criterias)  :
-               result=articles.query("match", title=criterias["title"])
-        if("abstract" in criterias ) :
-                if(result!=None) :
-                   result=(result.query("match", abstract=criterias["abstract"]))
-                else :
-                  result=(articles.query("match", abstract=criterias["abstract"]))    
-        if("keywords" in criterias ) :
-                if(result!=None) :
-                   result=(result.query("match", keywords=criterias["keywords"]))
-                else :
-                 result=(articles.query("match", keywords=criterias["keywords"]))
-        if("authors" in criterias ) :
-                if(result!=None) :
-                   result=(result.query("match", authors=criterias["authors"]))
-                else :
-                 result=(articles.query("match", authors=criterias["authors"]))
-        if("content" in criterias ) :
-                if(result!=None) :
-                   result=(result.query("match", content=criterias["content"]))
-                else :
-                 result=(articles.query("match", content=criterias["content"]))
-
-                 
-        return result
-     else :
-        return articles
-
-
-
-# articles=[]
-# pdf_path='Article_01.pdf'
-# article=extract_article_pdf(pdf_path)
-
-# article['article_id']=3
-
-# print(article)
-# articles.append(article)
-# pdf_path='Article_02.pdf'
-# article=extract_article_pdf(pdf_path)
-
-# article['article_id']=2
-
-# print(article)
-# articles.append(article)
-# print(len(articles))
-# index_articles(articles)

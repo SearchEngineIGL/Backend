@@ -3,8 +3,8 @@ from pydrive.drive import GoogleDrive
 from .pdf_extraction import extract_article_pdf
 import random
 from django.core.mail import EmailMessage
-# from .models import CustomUser   
-# from ..article_processing.pdf_extraction import extract_article_pdf
+from article_processing.elasticsearch_utils import *
+
 
 def send_moderator_email(data):
     email=EmailMessage(
@@ -71,7 +71,11 @@ def get_list_extractedFiles(link):
     print("Impossible d'extraire l'ID du dossier Google Drive.")
 
  liste_fichiers = lister_fichiers_dans_Drive(dossier_id)  
- article_id=1 
+ article_id=retrieve_last_article_id()
+ if article_id==None:
+     article_id=1
+    
+ 
  if liste_fichiers:
     
     # print("Liste des fichiers dans le dossier :")
@@ -87,8 +91,3 @@ def get_list_extractedFiles(link):
  return(list_articles)
 
 
-
-# # Main
-# url = "https://drive.google.com/drive/folders/1ZS68gD61U0ZOUkfj0GFcCHYqsHDVv4NX"   
-# listes=get_list_extractedFiles(url)
-# print(len(listes))
