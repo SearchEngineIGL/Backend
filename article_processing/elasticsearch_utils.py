@@ -5,54 +5,34 @@ from elasticsearch_dsl import Search
 # from .pdf_extraction import extract_article_pdf
 # from adminApp.utils import get_list_extractedFiles
 # Replace with your Elasticsearch server information
+
+"""_summary_
+Defintion of global variables
+"""
 ELASTICSEARCH_HOST = 'http://localhost:9200'
 ELASTICSEARCH_USERNAME = 'elastic'  
 ELASTICSEARCH_PASSWORD = 'nes2504rine'
-# ELASTICSEARCH_HOST = 'http://elasticsearch:9200'
-
 INDEX_NAME='articles_index'
-# es = connections.create_connection(hosts=['http://localhost:9200'], http_auth= ['elastic', 'nes2504rine'],)
-# # Define your list of articles
-articles = [
-    {"article_id":1,"title": "Article 1", "content": "This is the content of Article 1.", "author": "John Doe","date":None},
-    {"article_id":2,"title": "Article 2", "content": "This is the content of Article 2.", "author": "Jane Smith","date":None},
-    {"article_id":2,"title": "Article 3", "content": "This is the content of Article 2.", "author": "Jane Smith","date":None},
-    
-]
 es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
+
+
+"""_summary_
+Function to indexing all the articles in the elastic search index 
+    """
 def index_articles(articles):
-    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
     print("hello")
     # Create an index (if not exists)
     index_name = INDEX_NAME
-
-    # for article in articles:
-    #      es.index(index=index_name, body=article,)
-    # Index each article using article_id as the document ID
     for article in articles:
         article_id = article["article_id"]
         es.index(index=index_name, body=article, id=article_id)
 
-# def retrieve_all_articles():
-   
-#     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
-#     # Replace 'articles_index' with your actual index name
-#     index_name = INDEX_NAME
 
-#     # Check if the index exists
-#     if es.indices.exists(index=index_name):
-#         # Use the search API to retrieve all documents
-#         search_result = es.search(index=index_name, body={"query": {"match_all": {}}})
-
-#         # Display the retrieved articles
-#         for hit in search_result['hits']['hits']:
-#             article = hit['_source']
-#             print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
-            
-
+"""_summary_
+Function to get all the articles existing in the elastic search index 
+    """
 def retrieve_all_articles():
    
-    es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
     # Replace 'articles_index' with your actual index name
     index_name = INDEX_NAME
 
@@ -67,6 +47,9 @@ def retrieve_all_articles():
             print(f"Title: {article.get('title')}, Content: {article.get('content')}, Author: {article.get('author')}")
             
 
+"""_summary_
+Function to get all the articles existing  in the elastic search index but only the id , state ,url info for each article
+    """
 def retrieve_all_articles_list():
     articles=[]
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,)
@@ -92,6 +75,9 @@ def retrieve_all_articles_list():
     return(articles)   
         
 
+"""_summary_
+Function to delete an article from the elastic search index 
+    """
 def delete_article_by_custom_id(article_id):
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
     # Replace 'articles_index' with your actual index name
@@ -119,6 +105,10 @@ def delete_article_by_custom_id(article_id):
     else:
         print(f"Index {index_name} does not exist.")
 
+
+"""_summary_
+Function to get the last article id  in  elastic search index 
+    """
 def retrieve_last_article_id():
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
     # Replace 'articles_index' with your actual index name
@@ -144,6 +134,9 @@ def retrieve_last_article_id():
         print(f"Index {index_name} does not exist.")
         return None
 
+"""_summary_
+Function to add new  article in the elastic search index 
+    """
 def add_new_articles(articles):
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
     # Replace 'articles_index' with your actual index name
@@ -163,6 +156,9 @@ def add_new_articles(articles):
         print(f"Error adding new articles: {e}")
 
 
+"""_summary_
+Function to update an article in the elastic search index 
+    """
 
 def update_article_by_custom_id(article_id, updated_fields):
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
@@ -196,6 +192,9 @@ def update_article_by_custom_id(article_id, updated_fields):
 
 
 
+"""_summary_
+Function to delete the elastic search index 
+    """
 def delete_index(index_name):
     
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
@@ -211,7 +210,10 @@ def delete_index(index_name):
     else:
         print(f"Index {index_name} does not exist.")
         
-        
+
+"""_summary_
+Function to return all the articles ID existing in the elastic search index 
+    """ 
 def give_article(article_id):
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST, basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD])
     index_name = INDEX_NAME
@@ -233,12 +235,18 @@ def give_article(article_id):
 
 
 
+"""_summary_
+Function to search  articles in the elastic search index 
+    """
 def search(data):
          #res=Search(index=INDEX_NAME).using(client).query("multi_match",fuzziness="AUTO",query=data)
     res = Search(using=es, index=INDEX_NAME).query("multi_match", fuzziness="AUTO", query=data).filter("term", state="done")
     return res
 
 
+"""_summary_
+Function to filtre  the articles in the elastic search index according to criterias
+    """
 
 def filtrer(criterias, articles):
     result = articles
@@ -256,7 +264,9 @@ def filtrer(criterias, articles):
     return result
     
     
-    
+"""_summary_
+Function to publish an article after correction 
+    """   
     
 def publish_article(article_id):
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST,basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD],)
@@ -290,6 +300,9 @@ def publish_article(article_id):
 
 
 
+"""_summary_
+Function to order all the articles in the elastic search index according to the date of publhing (recent article)
+    """
 
 def get_articles_ordered_by_date():
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST, basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD])
