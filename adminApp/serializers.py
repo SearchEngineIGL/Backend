@@ -4,6 +4,13 @@ from authenticationApp.managers import *
 from authenticationApp.serializers import *
 from .utils import *
 from article_processing.elasticsearch_utils import *
+
+
+"""_summary_
+    Class to serialize data of an modeartor object
+    Returns:
+        _user_: _type of  moderator_
+    """
 class CreateModeratorserializer(serializers.ModelSerializer):
     class Meta:
         model=CustomUser
@@ -19,7 +26,10 @@ class CreateModeratorserializer(serializers.ModelSerializer):
             user.PhoneNumber = validated_data['PhoneNumber']
         user.save()
         return user
-        
+ 
+"""
+Class to serialze the admin object
+"""       
 class ModifyAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
@@ -52,14 +62,3 @@ class ModifyAdminSerializer(serializers.ModelSerializer):
    
 
 
-class GetUrlSerializer(serializers.Serializer):
-    link = serializers.CharField(max_length=255)
-    
-    def validate(self, attrs):
-        link = attrs.get('link')
-        print("here2")
-        list_articles = get_list_extractedFiles(link)
-        print("here2")
-        index_articles(list_articles)
-        # Additional validation or processing logic can be added here
-        return attrs  # Don't forget to return the validated data

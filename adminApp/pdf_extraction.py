@@ -98,7 +98,7 @@ def extract_institutions(text, persons):
 
     # Remove lines containing email addresses
     lines = [line for line in lines if '@' not in line]
-    # print(lines)
+
     # Remove lines containing names from the persons list
     for person in persons:
         

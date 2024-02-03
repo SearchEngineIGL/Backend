@@ -10,9 +10,10 @@ ELASTICSEARCH_USERNAME = 'elastic'
 ELASTICSEARCH_PASSWORD = 'nes2504rine'
 INDEX_NAME='articles_index'
 
-# from .models import CustomUser   
-# from ..article_processing.pdf_extraction import extract_article_pdf
 
+"""_summary_
+function to send to the moderator an email 
+    """
 def send_moderator_email(data):
     email=EmailMessage(
         subject="You're a moderator now ! ",
@@ -21,7 +22,11 @@ def send_moderator_email(data):
         to=[data['email']],
     )
     email.send()
-    
+
+
+"""_summary_
+function to send to the moderator an email to tell him we modifie his information
+    """  
 def send_moderator_email_modify(data):
     email=EmailMessage(
         subject="Informations Changed ",
@@ -30,7 +35,11 @@ def send_moderator_email_modify(data):
         to=[data['email']],
     )
     email.send()
-    
+  
+
+"""_summary_
+function to send to the moderator an email to tell him that he is deleted from the moderator role
+    """  
 def send_moderator_email_delete(email):
     email=EmailMessage(
         subject="You're no more moderator ! ",
@@ -67,6 +76,10 @@ def lister_fichiers_dans_Drive(folder_id):
 
     return folder_files
 
+
+"""_summary_
+function return the id of the new article added in the index 
+    """
 def get_next_article_id(es, index_name):
     # Get the count of existing articles in Elasticsearch
     count_response = es.count(index=index_name)
@@ -76,6 +89,9 @@ def get_next_article_id(es, index_name):
     return existing_articles_count + 1
 
 
+"""_summary_
+function to get all the articles existing in the drive link and extract each pdf using the extraction method
+    """
 def get_list_extractedFiles(link):
  list_articles=[]
  dossier_id = extraire_id_dossier_google_drive(link)
@@ -100,7 +116,7 @@ def get_list_extractedFiles(link):
     for fichier in liste_fichiers:
         # Use 'webContentLink' for direct download link
         pdf_url = fichier['webContentLink']
-        result=extract_article_pdf2(pdf_path=pdf_url,article_id=article_id)
+        result=extract_article_pdf(pdf_path=pdf_url,article_id=article_id)
         article_id = str(int(article_id) + 1)
         list_articles.append(result)       
  else:

@@ -15,11 +15,18 @@ from django.views.decorators.csrf import csrf_exempt
 from .serializers import *
 from article_processing.elasticsearch_utils import *
 
+
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def welcomeAdmin(request):
     return Response({'message':"Welcome Admin ! "})
 
+
+"""_summary_
+the view of creating new moderator to make the REST API link 
+    """
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated,IsAdminUser])
@@ -35,7 +42,9 @@ def create_moderator(request):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
     
-
+"""_summary_
+the view of listing all moderators to make the REST API link 
+    """
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
@@ -45,7 +54,9 @@ def list_of_moderators(request):
         serializer=CustomUserSerializer(moderators,many=True)
         return Response(serializer.data)
     
-    
+"""_summary_
+the view of modifying moderator information to make the REST API link 
+    """ 
 @api_view(['PUT','GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def MAJ_moderator(request,id):
@@ -64,7 +75,10 @@ def MAJ_moderator(request,id):
             send_moderator_email_modify(serializer.data)
             return Response(serializer.data)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-            
+    
+"""_summary_
+the view of delete a moderator to make the REST API link 
+    """        
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def Delete_moderator(request,id):
@@ -79,7 +93,9 @@ def Delete_moderator(request,id):
         return Response(status=status.HTTP_204_NO_CONTENT)
             
             
-
+"""_summary_
+the view of changing the Admin settings to make the REST API link 
+    """
 
 @api_view(['PUT','GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
@@ -104,7 +120,9 @@ def AdminSettings(request):
         
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         
-
+"""_summary_
+the view of get the list of the articles form the drive  for the uploading function to make the REST API link 
+    """
 api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdminUser])
 def get_articles(request):
@@ -120,15 +138,3 @@ def get_articles(request):
         return Response({'message':"correct link"},status=status.HTTP_200_OK)
     return Response({'message': 'Invalid request method'}, status=400)
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated, IsAdminUser])
-# def get_articles(request):
-#     if request.method == 'POST':
-#         serializer = GetUrlSerializer(data=request.data)
-#         if serializer.is_valid():
-#             link = serializer.validated_data['link']
-#             list_articles = get_list_extractedFiles(link)
-#             index_articles(list_articles)
-#             return Response({'message': "correct link"}, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#     return Response({'message': 'Invalid request method'}, status=status.HTTP_400_BAD_REQUEST)
