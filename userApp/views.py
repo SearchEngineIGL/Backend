@@ -28,24 +28,30 @@ from article_processing.elasticsearch_utils import filtrer, search
 #     return JsonResponse({'error': 'Invalid request method'})
 
 
-@api_view(['POST'])
+@api_view(['GET','POST'])
 @permission_classes([IsAuthenticated, IsSimpleUser])
-def search_view(request):
-    if request.method == 'POST':
-        data_input = request.data.get("query")
-        criteria = request.data.get("criteria")
-        
-        # Call your Elasticsearch function with the user input
-        search_results = search(data_input)
-        
-        # Apply additional filtering based on criteria
-        if criteria:
-            search_results = filtrer(criteria, search_results)
-
+def search_view(request,query):
+    criteria=None
+    if request.method == 'GET':
+        search_results = search(query)
         results_list = []
         for hit in search_results.execute():
             results_list.append(hit.to_dict())
-
+        return Response(results_list, status=status.HTTP_200_OK)
+    if request.method=='POST':
+        
+        if request.data!=None:
+            criteria = request.data
+            print(criteria)
+            
+        search_results = search(query)
+        if criteria:
+            search_results2 = filtrer(criteria, search_results)
+            print(search_results2)
+        results_list = []
+        for hit in search_results2.execute():
+            results_list.append(hit.to_dict())
+        print(results_list)
         return Response(results_list, status=status.HTTP_200_OK)
 
     return JsonResponse({'error': 'Invalid request method'})

@@ -87,9 +87,7 @@ def get_list_extractedFiles(link):
 
  liste_fichiers = lister_fichiers_dans_Drive(dossier_id)  
  article_id=retrieve_last_article_id()
- print(type(article_id))
- print(article_id)
- print('--------*-----------*')
+ 
  if article_id==None:
      article_id=1
  else:
@@ -102,10 +100,6 @@ def get_list_extractedFiles(link):
     for fichier in liste_fichiers:
         # Use 'webContentLink' for direct download link
         pdf_url = fichier['webContentLink']
-        print('-----------------------------------------')
-        print(pdf_url)
-        print(article_id)
-        print('-----------------------------------------')
         result=extract_article_pdf2(pdf_path=pdf_url,article_id=article_id)
         article_id = str(int(article_id) + 1)
         list_articles.append(result)       

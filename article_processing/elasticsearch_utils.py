@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl.connections import connections
-
+from elasticsearch_dsl import Q
 from elasticsearch_dsl import Search
 from .pdf_extraction import extract_article_pdf
 # from adminApp.utils import get_list_extractedFiles
@@ -27,7 +27,6 @@ def index_articles(articles):
     # for article in articles:
     #      es.index(index=index_name, body=article,)
     # Index each article using article_id as the document ID
-    print(articles)
     for article in articles:
         article_id = article["article_id"]
         es.index(index=index_name, body=article, id=article_id)
@@ -221,37 +220,21 @@ def search(data):
     return res
 
 
-def filtrer(criterias , articles ):
-     result =None 
-# test2.query("match", fam_name="dehili").execute()
-     if (criterias != None ) :
-        if( "title" in criterias)  :
-               result=articles.query("match", title=criterias["title"])
-        if("abstract" in criterias ) :
-                if(result!=None) :
-                   result=(result.query("match", abstract=criterias["abstract"]))
-                else :
-                  result=(articles.query("match", abstract=criterias["abstract"]))    
-        if("keywords" in criterias ) :
-                if(result!=None) :
-                   result=(result.query("match", keywords=criterias["keywords"]))
-                else :
-                 result=(articles.query("match", keywords=criterias["keywords"]))
-        if("authors" in criterias ) :
-                if(result!=None) :
-                   result=(result.query("match", authors=criterias["authors"]))
-                else :
-                 result=(articles.query("match", authors=criterias["authors"]))
-        if("content" in criterias ) :
-                if(result!=None) :
-                   result=(result.query("match", content=criterias["content"]))
-                else :
-                 result=(articles.query("match", content=criterias["content"]))
 
-                 
-        return result
-     else :
-        return articles
+def filtrer(criterias, articles):
+    result = articles
+
+    if criterias:
+        if "keywords" in criterias:
+            # Use terms query for partial matching of keywords
+            result = result.query(Q("match", keywords={"query": criterias["keywords"], "operator": "OR"}))
+            
+
+        if "authors" in criterias:
+            # Use match query for exact matching of authors
+            result = result.query(Q("match", authors=criterias["authors"]))
+
+    return result
     
     
     
