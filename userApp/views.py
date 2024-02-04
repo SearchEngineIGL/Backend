@@ -133,16 +133,17 @@ def isFav(request):
     article_id = request.data.get("article_id")
     user=request.user
     favors = user.get_additional_data().get('list_of_favorites', [])    
+    print(article_id)
+    print(favors)
     if article_id in favors :
-        print(article_id)
+        
         return Response(status=status.HTTP_200_OK)    
     else :
-        print('404'+article_id)
+        
         return Response(status=status.HTTP_204_NO_CONTENT)    
     
     
 @api_view(['GET'])
-@permission_classes([IsAuthenticated, IsSimpleUser])
 def homeArticles(request):
     if request.method == 'GET':
         articles=get_articles_ordered_by_date()
