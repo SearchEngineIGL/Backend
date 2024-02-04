@@ -2,7 +2,9 @@ from elasticsearch import Elasticsearch
 from elasticsearch_dsl.connections import connections
 from elasticsearch_dsl import Q
 from elasticsearch_dsl import Search
-# from .pdf_extraction import extract_article_pdf
+from datetime import datetime
+
+
 # from adminApp.utils import get_list_extractedFiles
 # Replace with your Elasticsearch server information
 
@@ -171,7 +173,7 @@ def update_article_by_custom_id(article_id, updated_fields):
             # Use the search API to find documents with the specified article_id
             search_result = es.search(index=index_name, body={
                 "query": {"term": {"article_id": article_id}},
-                "size": 1
+                "size": 1,
             })
 
             # Check if any documents were found
@@ -239,8 +241,12 @@ def give_article(article_id):
 Function to search  articles in the elastic search index 
     """
 def search(data):
-         #res=Search(index=INDEX_NAME).using(client).query("multi_match",fuzziness="AUTO",query=data)
-    res = Search(using=es, index=INDEX_NAME).query("multi_match", fuzziness="AUTO", query=data).filter("term", state="done")
+    if data is None:
+        # Return all articles without applying any specific search query
+        res = Search(using=es, index=INDEX_NAME).filter("term", state="done")
+    else:
+        # Perform a search with the provided query
+        res = Search(using=es, index=INDEX_NAME).query("multi_match", fuzziness="AUTO", query=data).filter("term", state="done")
     return res
 
 
@@ -248,18 +254,34 @@ def search(data):
 Function to filtre  the articles in the elastic search index according to criterias
     """
 
-def filtrer(criterias, articles):
-    result = articles
+def filtrer(criterias, data):
+    result = search(data)
 
     if criterias:
-        if "keywords" in criterias:
-            # Use terms query for partial matching of keywords
+        if "keywords" in criterias and criterias["keywords"]!='':
             result = result.query(Q("match", keywords={"query": criterias["keywords"], "operator": "OR"}))
-            
-
-        if "authors" in criterias:
+        if "author" in criterias and criterias["author"]!='':
             # Use match query for exact matching of authors
-            result = result.query(Q("match", authors=criterias["authors"]))
+            result = result.query(Q("match", authors={"query": criterias["author"], "operator": "OR"}))
+        if "institutions" in criterias and criterias["institutions"]!='':
+            # Use match query for exact matching of authors
+            result = result.query(Q("match", institutions={"query": criterias["institutions"], "operator": "OR"}))
+
+        startDate = criterias.get("startDate")
+        endDate = criterias.get("endDate")
+
+        if startDate and endDate:
+            start_datetime = datetime.strptime(startDate, "%Y-%m-%d")
+            end_datetime = datetime.strptime(endDate, "%Y-%m-%d")
+            print(startDate)
+            result = result.filter("range", date={"gte": start_datetime, "lte": end_datetime})
+        elif startDate:
+            start_datetime = datetime.strptime(startDate, "%Y-%m-%d")
+            
+            result = result.filter("range", date={"gte": start_datetime})
+        elif endDate:
+            end_datetime = datetime.strptime(endDate, "%Y-%m-%d")
+            result = result.filter("range", date={"lte": end_datetime})
 
     return result
     
@@ -300,29 +322,35 @@ def publish_article(article_id):
 
 
 
-"""_summary_
-Function to order all the articles in the elastic search index according to the date of publhing (recent article)
-    """
 
 def get_articles_ordered_by_date():
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST, basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD])
     index_name = INDEX_NAME
-
-
+    articles=[]
     try:
-        # Use the search API to retrieve articles ordered by the 'date' field
+        # Use the search API to retrieve 5 articles ordered by the 'date' field
         search_result = es.search(
             index=index_name,
             body={
                 "query": {"match_all": {}},
-                "sort": [{"date": {"order": "desc"}}]  # Sort by 'date' field in descending order
+                "sort": [{"date": {"order": "desc"}}],  # Sort by 'date' field in descending order
+                "size": 5  # Specify the number of hits to return (5 in this case)
             }
         )
 
         # Access the sorted articles in the search_result
         sorted_articles = search_result['hits']['hits']
+        for hit in sorted_articles:
+            article = hit['_source']
+            article_id = hit['_id']  # Retrieve the article ID
+            article_title = article.get('title')
+            state = article.get('state')  # Assuming there is a field named 'status'
+            url = article.get('url')  # Assuming there is a field named 'status'
+            content = article.get('content')  # Assuming there is a field named 'status'
+            keywords=article.get('keywords')
 
-        print('Articles ordered by date:', sorted_articles)
+            # Add the article details to the list
+            articles.append({"article_id": article_id, "article_title": article_title,"state": state,"url":url,"content":content,"keywords":keywords})
+        return (articles)
     except Exception as e:
         print(f"Error retrieving articles: {e}")
-

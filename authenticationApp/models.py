@@ -10,6 +10,7 @@ import json
 
 
 
+
 class CustomUser(AbstractUser):
     
     USER_TYPE_CHOICES = [
@@ -24,7 +25,6 @@ class CustomUser(AbstractUser):
     is_verified=models.BooleanField(default=False)
     photo= models.ImageField(upload_to='profile_pictures/',  null=True,blank=True,default='/profile_pictures/default.png')
     objects=CustomUserManager()
-    
     def tokens(self):
         refresh=RefreshToken.for_user(self)
         return{
@@ -38,19 +38,7 @@ class CustomUser(AbstractUser):
 
     def get_additional_data(self):
         return json.loads(self.additional_data) if self.additional_data else {}
-# class SimpleUser(CustomUser):
-#     objects=SimpleUserManager()
-    
 
-
-    
-
-# class ModeratorUser(CustomUser):
-#     pass
-
-# class AdminUser(CustomUser):
-#     pass
-    
 
 class OneTimePassword(models.Model):
     user=models.OneToOneField(CustomUser,on_delete=models.CASCADE,null=True)
