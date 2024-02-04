@@ -163,6 +163,19 @@ def extract_sections(text,title):
     return  institutions , authors, abstract, keywords, content, references
 
 
+def replace_newlines(text):
+    # Split the text by newline characters
+    lines = text.split('\n')
+
+    # Replace newlines with spaces for all lines except the last one
+    modified_lines = [line.strip() + ' ' for line in lines[:-1]] + [lines[-1]]
+
+    # Join the modified lines back into a single string
+    result_text = ''.join(modified_lines)
+
+    return result_text
+
+
 
 
 """__Function to read the pdf file and extract all th information needed
@@ -186,77 +199,28 @@ def extract_article_pdf(pdf_path,article_id):
         blocks = remove_header_footer(page)
         if page_num == 0:
             title = extract_title(blocks)
-          
-       
-        # print(blocks)
         text += blocks_to_text(blocks)
     
         text=text.lower()
         
-        # print(text)
-        Title=title[4].lower()
-        # print(Title)
-     institutions , authors, abstract, keywords, content, references = extract_sections(text,Title)
-      # Create a dictionary
-     article_data = {
-        "article_id":article_id,
-        "title":Title,
-        "institutions": institutions,
-        "authors": authors,
-        "abstract": abstract,
-        "keywords": keywords,
-        "content": content,
-        "references": references,
-        "state":"pending",
-        "url":pdf_path,
-     }
-     # Return the dictionary
-     return article_data
-     
-
-
-def extract_article_pdf2(pdf_path,article_id):
-      # Fetch PDF content from the URL
-     response = requests.get(pdf_path)
-    
-     if response.status_code == 200:
-        pdf_content = response.content
-
-        # Use PyMuPDF to process the PDF content
-     with fitz.open("pdf", pdf_content) as pdf_document:
-    #  with fitz.open(pdf_path) as pdf_document:
-      text = ""
-      num_pages = pdf_document.page_count
-      for page_num in range(num_pages):
-        page = pdf_document[page_num]
-        page.wrap_contents()
-        blocks = remove_header_footer(page)
-        if page_num == 0:
-            title = extract_title(blocks)
-          
-       
-        # print(blocks)
-        text += blocks_to_text(blocks)
-    
-        text=text.lower()
         
-        # print(text)
         Title=title[4].lower()
-        # print(Title)
+        
      institutions , authors, abstract, keywords, content, references = extract_sections(text,Title)
+     
       # Create a dictionary
      article_data = {
         "article_id":article_id,
-        "title":Title,
-        "institutions": institutions,
-        "authors": authors,
-        "abstract": abstract,
-        "keywords": keywords,
-        "content": content,
-        "references": references,
+        "title":replace_newlines(Title),
+        "institutions": replace_newlines(institutions),
+        "authors":  authors,
+        "abstract":replace_newlines( abstract),
+        "keywords": replace_newlines(keywords),
+        "content": replace_newlines(content),
+        "references": replace_newlines(references),
         "state":"pending",
         "url":pdf_path,
+        "date":None
      }
      # Return the dictionary
      return article_data
-     

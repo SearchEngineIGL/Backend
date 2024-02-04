@@ -100,7 +100,7 @@ def get_list_extractedFiles(link):
     for fichier in liste_fichiers:
         # Use 'webContentLink' for direct download link
         pdf_url = fichier['webContentLink']
-        result=extract_article_pdf2(pdf_path=pdf_url,article_id=article_id)
+        result=extract_article_pdf(pdf_path=pdf_url,article_id=article_id)
         article_id = str(int(article_id) + 1)
         list_articles.append(result)       
  else:
