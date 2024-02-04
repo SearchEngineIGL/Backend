@@ -1,8 +1,18 @@
+"""_summary_
+
+    Authentification module contains all the functions related to the registration 
+    """  
+
+
+
 import random
 from django.core.mail import EmailMessage
 from authenticationApp.models import OneTimePassword,CustomUser
 
+"""_summary_
 
+    Function for generating OTP code to be send to the user after registration
+    """
 
 def generateOtp():
     otp=""
@@ -10,6 +20,11 @@ def generateOtp():
         otp+=str(random.randint(1,9))
     return otp
 
+
+"""_summary_
+
+    Function for generating OTP code to be send to the user after registration
+    """
 def send_code_to_user(email):
     Subject="One time pascode for Email verification"
     otp_code=generateOtp()
@@ -22,7 +37,13 @@ def send_code_to_user(email):
     send_email=EmailMessage(subject=Subject,body=email_body,from_email=from_email,to=[email])
     send_email.send(fail_silently=True)
     
-    
+
+
+
+"""_summary_
+
+    Function for send user confirmation email
+    """  
 def send_normal_email(data):
     email=EmailMessage(
         subject=data['email_subject'],

@@ -1,3 +1,8 @@
+"""_summary_
+
+    ELastic Search module contains all the functions related to articles index , search , filter 
+    """  
+
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl.connections import connections
 from elasticsearch_dsl import Q
@@ -321,7 +326,9 @@ def publish_article(article_id):
         print(f"Index {index_name} does not exist.")
 
 
-
+"""_summary_
+Function to order all the articles in the elastic search index according to the date of publhing (recent article)
+    """
 
 def get_articles_ordered_by_date():
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST, basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD])

@@ -9,7 +9,11 @@ import json
 
 
 
-
+"""_summary_
+    Mpdel for User object (User and Admin)
+    Returns:
+        _User_
+    """
 
 class CustomUser(AbstractUser):
     

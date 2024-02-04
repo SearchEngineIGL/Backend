@@ -1,3 +1,10 @@
+"""_summary_
+
+   Admin module contains all the functions related to the admin functionnalities  
+    """  
+
+
+
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from .pdf_extraction import *

@@ -12,22 +12,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from article_processing.elasticsearch_utils import filtrer, search ,give_article,get_articles_ordered_by_date
 
-# request.query_params
-# @api_view(['POST'])
-# def search_view(request):
-#     if request.method == 'POST':
-#         dataInput = request.data.get("query")
-#         # Call your Elasticsearch function with the user input
-#         search_results = search(dataInput)
-#         results_list = []
-#         for hit in search_results.execute():
-#             results_list.append(hit.to_dict())
+"""_summary_
 
-#         return Response(results_list,status=status.HTTP_200_OK)
-
-#     return JsonResponse({'error': 'Invalid request method'})
-
-
+    Search view to send articles and get the request from the user  
+    """
 @api_view(['GET','POST'])
 @permission_classes([IsAuthenticated, IsSimpleUser])
 def search_view(request,query):
@@ -61,6 +49,11 @@ def welcomeUser(request):
     return Response({'message':"Welcome User ! "})
 
 
+"""_summary_
+
+    Article view to display it to the user  
+    """
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
 def ViewArticle(request,article_id):
@@ -68,7 +61,10 @@ def ViewArticle(request,article_id):
         article=give_article(article_id)
         return Response(article,status=status.HTTP_200_OK)
     
-    
+
+"""_summary_
+
+    User view to make modification on the user object    """   
     
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
@@ -87,7 +83,10 @@ def UserSettings(request):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
+"""_summary_
 
+    Favors articles view to add articles to the favors list related to the user
+    """
 @api_view(['POST'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
 def addFav(request):
@@ -98,7 +97,13 @@ def addFav(request):
     user.set_additional_data({'list_of_favorites': favs})
     user.save()
     return Response(status=status.HTTP_201_CREATED)
-    
+
+
+
+"""_summary_
+
+    Favors articles view to remove articles to the favors list related to the user
+    """    
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
 def rmvFav(request):
@@ -113,7 +118,11 @@ def rmvFav(request):
     else :
         return Response(status=status.HTTP_404_NOT_FOUND)
     
-        
+
+"""_summary_
+
+    Favors articles view to get the list of favorite articles from user
+    """      
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
 def getFavs(request):
@@ -125,7 +134,12 @@ def getFavs(request):
         article=give_article(element)
         articles.append(article)
     return Response(articles,status=status.HTTP_200_OK)
-    
+
+
+"""_summary_
+
+    Favors articles view to if the article is in favor or not
+    """   
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
@@ -140,7 +154,10 @@ def isFav(request):
         print('404'+article_id)
         return Response(status=status.HTTP_204_NO_CONTENT)    
     
-    
+"""_summary_
+
+    Home article view to display all recent articles 
+    """  
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsSimpleUser])
 def homeArticles(request):

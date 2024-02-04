@@ -3,7 +3,13 @@ from rest_framework import serializers
 from .models import *
 from authenticationApp.managers import *
 from authenticationApp.serializers import *
-   
+
+
+
+"""_summary_
+
+    Serialzer Class to manipulate Moderator objects
+    """
         
 class ModifyModeratorSerializer(serializers.ModelSerializer):
     

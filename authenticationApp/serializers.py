@@ -12,6 +12,11 @@ from .utils import send_normal_email
 from rest_framework_simplejwt.tokens import RefreshToken,Token
 from rest_framework_simplejwt.exceptions import TokenError
 
+
+"""_summary_
+
+    Serialzer Class to manipulate User Object in register method
+    """
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model=CustomUser
@@ -22,7 +27,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         user=CustomUser.objects.create_user(email=validated_data['email'],username=validated_data['username'],password=validated_data['password'],user_type="simple")
         return user
         
-        
+"""_summary_
+
+    Serialzer Class to manipulate User Object 
+    """     
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model=CustomUser
@@ -33,7 +41,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
         
         
  
-    
+    """_summary_
+
+    Serialzer Class to manipulate User Object in log in method
+    """
 class LoginSerializer(serializers.ModelSerializer):
     email=serializers.CharField(max_length=255)
     password=serializers.CharField(max_length=255,write_only=True)
@@ -60,7 +71,10 @@ class LoginSerializer(serializers.ModelSerializer):
             'refresh_token':str(user_tokens.get('refresh')),
         }
             
-            
+"""_summary_
+
+    Serialzer Class to manipulate User Object in reset password method
+    """   
 class PasswordResetRequestSerializer(serializers.Serializer):
     email=serializers.EmailField(max_length=255)
     class Meta :
@@ -87,7 +101,10 @@ class PasswordResetRequestSerializer(serializers.Serializer):
             send_normal_email(data)
         return super().validate(attrs)
         
+"""_summary_
 
+    Serialzer Class to manipulate User Object in setting new password method
+    """
 class SetNewPasswordSerializer(serializers.Serializer):
     password=serializers.CharField(max_length=100,min_length=6,write_only=True)
     uidb64=serializers.CharField(write_only=True)
@@ -109,7 +126,12 @@ class SetNewPasswordSerializer(serializers.Serializer):
             return user
         except Exception as e:
             return AuthenticationFailed("Link is invalid or has expired !")
-                
+      
+      
+"""_summary_
+
+    Serialzer Class to manipulate User Object in log out method
+    """          
 class LogoutUserSerializer(serializers.Serializer):
     refresh_token=serializers.CharField()
     

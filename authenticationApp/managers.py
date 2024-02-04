@@ -6,7 +6,12 @@ from django.contrib.auth.hashers import check_password
 import json
 
 
+"""_summary_
+    Manager class to validate user account or admin account 
 
+    Returns:
+        _User_: _return a validate account for user , admin_
+    """
 class CustomUserManager(BaseUserManager):
     def email_validator(self,email):
         try:

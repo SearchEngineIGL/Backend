@@ -4,6 +4,10 @@ from .models import *
 from authenticationApp.managers import *
 
 
+"""_summary_
+
+    Serialzer Class to make modification in the user object 
+    """
 class ModifyUserSerializer(serializers.ModelSerializer):
     
     class Meta:

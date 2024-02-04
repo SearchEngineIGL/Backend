@@ -11,6 +11,12 @@ from .models import OneTimePassword,CustomUser
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import smart_str,DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
+
+"""_summary_
+
+    Register view to send the data to the front end 
+    """
 @api_view(['POST'])
 @permission_classes([AllowAny]) 
 def Register(request):
@@ -23,7 +29,12 @@ def Register(request):
             send_code_to_user(user['email'])
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+"""_summary_
+
+    Email Verification view to send the data to the front end 
+    """  
 @api_view(['POST'])
 @permission_classes([AllowAny]) 
 def VerifyUserEmail(request):
@@ -42,7 +53,10 @@ def VerifyUserEmail(request):
         except OneTimePassword.DoesNotExist:
             return Response({'message': 'passcode not provided'},status=status.HTTP_404_NOT_FOUND)
             
-    
+"""_summary_
+
+   Log In view to send the data to the front end 
+    """     
 @api_view(['POST'])
 @permission_classes([AllowAny]) 
 def LogIn(request):
@@ -52,7 +66,10 @@ def LogIn(request):
         print(serializer.data)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
+"""_summary_
 
+    Password Reset view to send the data to the front end 
+    """  
 @api_view([('POST')])
 @permission_classes([AllowAny]) 
 def PasswordReset(request):
@@ -66,7 +83,12 @@ def PasswordReset(request):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
         return Response({'message':'A link has been sent to your email to reset your password . '},status=status.HTTP_200_OK)
-    
+
+
+"""_summary_
+
+    Password Reset Confirmation view to get the data (code) to the front end 
+    """    
 @api_view([('GET')])
 @permission_classes([AllowAny]) 
 def PasswordResetConfirm(request,uidb64,token):
@@ -80,7 +102,11 @@ def PasswordResetConfirm(request,uidb64,token):
         except DjangoUnicodeDecodeError:
             return Response({'message':'token is invalid or has expired'},status=status.HTTP_401_UNAUTHORIZED)
         
-        
+      
+"""_summary_
+
+    New password  view to modify the new password  
+    """    
 @api_view(['PATCH'])
 @permission_classes([AllowAny]) 
 def SetNewPassword(request):
@@ -88,7 +114,10 @@ def SetNewPassword(request):
     serializer.is_valid(raise_exception=True)
     return Response({'message':'passwordreset successully'},status=status.HTTP_200_OK)
 
+"""_summary_
 
+    Log out  view to send the data to the front end 
+    """  
 @api_view(['POST'])
 @permission_classes([AllowAny]) 
 def LogoutUser(request):

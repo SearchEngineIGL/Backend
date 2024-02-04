@@ -227,23 +227,4 @@ def extract_article_pdf(pdf_path,article_id):
      # Return the dictionary
      return article_data
         
-     institutions , authors, abstract, keywords, content, references = extract_sections(text,Title)
-     
-      # Create a dictionary
-     article_data = {
-        "article_id":article_id,
-        "title":replace_newlines(Title),
-        "institutions": replace_newlines(institutions),
-        "authors":  authors,
-        "abstract":replace_newlines( abstract),
-        "keywords": replace_newlines(keywords),
-        "content": replace_newlines(content),
-        "references": replace_newlines(references),
-        "state":"pending",
-        "url":pdf_path,
-        "date":None
-     }
-     # Return the dictionary
-     return article_data
-     
 
