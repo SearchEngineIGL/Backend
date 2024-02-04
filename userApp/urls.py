@@ -9,4 +9,5 @@ urlpatterns = [
     path('rmfv/',views.rmvFav),
     path('favors/',views.getFavs),
     path('isfv/',views.isFav),
+    path('homeArticles/',views.homeArticles),
 ]

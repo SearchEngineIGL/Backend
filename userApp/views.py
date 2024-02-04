@@ -10,7 +10,7 @@ from .permissions import *
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from article_processing.elasticsearch_utils import filtrer, search ,give_article
+from article_processing.elasticsearch_utils import filtrer, search ,give_article,get_articles_ordered_by_date
 
 # request.query_params
 # @api_view(['POST'])
@@ -141,3 +141,9 @@ def isFav(request):
         return Response(status=status.HTTP_204_NO_CONTENT)    
     
     
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsSimpleUser])
+def homeArticles(request):
+    if request.method == 'GET':
+        articles=get_articles_ordered_by_date()
+        return Response(articles, status=status.HTTP_200_OK)

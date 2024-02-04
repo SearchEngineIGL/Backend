@@ -297,21 +297,31 @@ def publish_article(article_id):
 def get_articles_ordered_by_date():
     es = Elasticsearch(hosts=ELASTICSEARCH_HOST, basic_auth=[ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD])
     index_name = INDEX_NAME
-
-
+    articles=[]
     try:
-        # Use the search API to retrieve articles ordered by the 'date' field
+        # Use the search API to retrieve 5 articles ordered by the 'date' field
         search_result = es.search(
             index=index_name,
             body={
                 "query": {"match_all": {}},
-                "sort": [{"date": {"order": "desc"}}]  # Sort by 'date' field in descending order
+                "sort": [{"date": {"order": "desc"}}],  # Sort by 'date' field in descending order
+                "size": 5  # Specify the number of hits to return (5 in this case)
             }
         )
 
         # Access the sorted articles in the search_result
         sorted_articles = search_result['hits']['hits']
+        for hit in sorted_articles:
+            article = hit['_source']
+            article_id = hit['_id']  # Retrieve the article ID
+            article_title = article.get('title')
+            state = article.get('state')  # Assuming there is a field named 'status'
+            url = article.get('url')  # Assuming there is a field named 'status'
+            content = article.get('content')  # Assuming there is a field named 'status'
+            keywords=article.get('keywords')
 
-        print('Articles ordered by date:', sorted_articles)
+            # Add the article details to the list
+            articles.append({"article_id": article_id, "article_title": article_title,"state": state,"url":url,"content":content,"keywords":keywords})
+        return (articles)
     except Exception as e:
         print(f"Error retrieving articles: {e}")
