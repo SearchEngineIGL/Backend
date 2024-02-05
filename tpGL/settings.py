@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     'django_extensions',
 
     'rest_framework_simplejwt.token_blacklist',
-    "corsheaders",
+    'corsheaders',
 
 ]
 AUTH_USER_MODEL = 'authenticationApp.CustomUser'
@@ -91,7 +91,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

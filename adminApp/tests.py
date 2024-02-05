@@ -1,25 +1,38 @@
-from django.test import TestCase
+from django.urls import reverse
+from rest_framework.test import APITestCase
+from rest_framework import status
+from authenticationApp.models import CustomUser
 
-from .pdf_extraction import extract_article_pdf
 
-class PDFExtractionTestCase(TestCase):
+
+class CreateModeratorTestCase(APITestCase):
+    """_Unit test for testing the function of creating moderators by the admin_
+    """
+
     def setUp(self):
-        # You can set up any common objects or variables needed for the tests here
-        pass
+        # Create a user with admin privileges for authentication
+        self.admin_user = CustomUser.objects.create_superuser(username='admin', email='admin@example.com', password='adminpassword')
+        self.admin_user.is_staff = True
+        self.admin_user.is_superuser = True
+        self.admin_user.save()
 
-    def test_extract_article_pdf(self):
-        # Replace 'path/to/your/sample.pdf' with the actual path to your sample PDF file
-        sample_pdf_path = 'https://drive.google.com/uc?id=1mwtwqiMZGu0_WURi04oxjIIllFH9zExB&export=download'
+        # Set up data for testing
+        self.valid_data = {'username': 'newmoderator', 'email': 'newmoderator@example.com', 'password': 'password123'}
+    def test_create_moderator(self):
+        # Authenticate as admin user
+        self.client.force_authenticate(user=self.admin_user)
+
+        # Make a POST request to create a moderator
+        url = reverse('create_moderator')  # Assuming the view name is 'create_moderator'
+        response = self.client.post(url, data=self.valid_data)
+
+        # Assert the response status code
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Assert that the moderator was created in the database
+        self.assertTrue(CustomUser.objects.filter(username='newmoderator').exists())
+
+      
+
+
         
-        # Call the function to extract data from the sample PDF
-        result = extract_article_pdf(sample_pdf_path)
-
-        # Define expected values based on the content of your sample PDF
-        expected_title = "excepted title"
-        expected_abstract = "excepted abstract"
-        # Add more expected values for other fields
-
-        # Assert the actual results match the expected values
-        # self.assertEqual(result['title'], expected_title)
-        self.assertEqual(result['abstract'], expected_abstract)
-        # Add more assertions for other fields

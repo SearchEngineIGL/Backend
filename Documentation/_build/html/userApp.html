@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="english" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User App &mdash; CRTL F Engine 2023/2024 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=62f75a9a"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Moderator App" href="moderatorApp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CRTL F Engine
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="adminApp.html">Admin App</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elasticSearch.html">Elastic Search App</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticationApp.html">Authentification App</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moderatorApp.html">Moderator App</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User App</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#userApp.views.UserSettings"><code class="docutils literal notranslate"><span class="pre">UserSettings()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#userApp.views.ViewArticle"><code class="docutils literal notranslate"><span class="pre">ViewArticle()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#userApp.views.addFav"><code class="docutils literal notranslate"><span class="pre">addFav()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#userApp.views.getFavs"><code class="docutils literal notranslate"><span class="pre">getFavs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#userApp.views.homeArticles"><code class="docutils literal notranslate"><span class="pre">homeArticles()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#userApp.views.isFav"><code class="docutils literal notranslate"><span class="pre">isFav()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#userApp.views.rmvFav"><code class="docutils literal notranslate"><span class="pre">rmvFav()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#userApp.views.search_view"><code class="docutils literal notranslate"><span class="pre">search_view()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#userApp.views.welcomeUser"><code class="docutils literal notranslate"><span class="pre">welcomeUser()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CRTL F Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">User App</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/userApp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-userApp.views">
+<span id="user-app"></span><h1>User App<a class="headerlink" href="#module-userApp.views" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="userApp.views.UserSettings">
+<span class="sig-prename descclassname"><span class="pre">userApp.views.</span></span><span class="sig-name descname"><span class="pre">UserSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#userApp.views.UserSettings" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>User view to make modification on the user object</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="userApp.views.ViewArticle">
+<span class="sig-prename descclassname"><span class="pre">userApp.views.</span></span><span class="sig-name descname"><span class="pre">ViewArticle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#userApp.views.ViewArticle" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Article view to display it to the user</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="userApp.views.addFav">
+<span class="sig-prename descclassname"><span class="pre">userApp.views.</span></span><span class="sig-name descname"><span class="pre">addFav</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#userApp.views.addFav" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Favors articles view to add articles to the favors list related to the user</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="userApp.views.getFavs">
+<span class="sig-prename descclassname"><span class="pre">userApp.views.</span></span><span class="sig-name descname"><span class="pre">getFavs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#userApp.views.getFavs" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Favors articles view to get the list of favorite articles from user</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="userApp.views.homeArticles">
+<span class="sig-prename descclassname"><span class="pre">userApp.views.</span></span><span class="sig-name descname"><span class="pre">homeArticles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#userApp.views.homeArticles" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Home article view to display all recent articles</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="userApp.views.isFav">
+<span class="sig-prename descclassname"><span class="pre">userApp.views.</span></span><span class="sig-name descname"><span class="pre">isFav</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#userApp.views.isFav" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Favors articles view to if the article is in favor or not</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="userApp.views.rmvFav">
+<span class="sig-prename descclassname"><span class="pre">userApp.views.</span></span><span class="sig-name descname"><span class="pre">rmvFav</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#userApp.views.rmvFav" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Favors articles view to remove articles to the favors list related to the user</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="userApp.views.search_view">
+<span class="sig-prename descclassname"><span class="pre">userApp.views.</span></span><span class="sig-name descname"><span class="pre">search_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#userApp.views.search_view" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Search view to send articles and get the request from the user</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="userApp.views.welcomeUser">
+<span class="sig-prename descclassname"><span class="pre">userApp.views.</span></span><span class="sig-name descname"><span class="pre">welcomeUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#userApp.views.welcomeUser" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="moderatorApp.html" class="btn btn-neutral float-left" title="Moderator App" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, CTRL F Team .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

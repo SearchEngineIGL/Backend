@@ -15,15 +15,23 @@ from django.views.decorators.csrf import csrf_exempt
 from .serializers import *
 from article_processing.elasticsearch_utils import *
 
+
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def welcomeAdmin(request):
     return Response({'message':"Welcome Admin ! "})
 
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def create_moderator(request):
+    
+    """_summary_
+the view of creating new moderator to make the REST API link 
+    """
     
     if request.method == 'POST':
         serializer=CreateModeratorserializer(data=request.data)
@@ -36,19 +44,25 @@ def create_moderator(request):
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
     
 
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def list_of_moderators(request):
+    """_summary_
+    the view of listing all moderators to make the REST API link 
+    """
+
     if request.method =='GET':
         moderators=CustomUser.objects.filter(user_type="moderator")
         serializer=CustomUserSerializer(moderators,many=True)
         return Response(serializer.data)
     
-    
+
 @api_view(['PUT','GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def MAJ_moderator(request,id):
+    """_summary_
+the view of modifying moderator information to make the REST API link 
+    """ 
     try: 
         user=CustomUser.objects.get(id=id)
     except CustomUser.DoesNotExist():
@@ -64,10 +78,14 @@ def MAJ_moderator(request,id):
             send_moderator_email_modify(serializer.data)
             return Response(serializer.data)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-            
+    
+      
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def Delete_moderator(request,id):
+    """_summary_
+the view of delete a moderator to make the REST API link 
+    """  
     if request.method=='DELETE':
         try: 
             user=CustomUser.objects.get(id=id)
@@ -84,12 +102,16 @@ def Delete_moderator(request,id):
 @api_view(['PUT','GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def AdminSettings(request):
+    """_summary_
+the view of changing the Admin settings to make the REST API link 
+    """
     admin_user=request.user
     if request.method == 'GET':
         serializer = ModifyAdminSerializer(admin_user)
         return Response(serializer.data)
 
     if request.method=='PUT':
+        
         
         admin_user=request.user
         data=request.data
@@ -98,29 +120,18 @@ def AdminSettings(request):
         if serializer.is_valid():
             serializer.save()
             
+            
             return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
         
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-        
 
-
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated, IsAdminUser])
-# def upload_articles_from_url(request):
-#     if request.method == 'POST':
-#         url = request.data.get('url')
-        
-#         # Fetch articles from the provided URL
-#         response = requests.get(url)
-        
-#         articles_data = get_list_extractedFiles(response.content)
-#         if(articles_data==None):
-#             return Response( status=status.HTTP_400_BAD_REQUEST)
-        
-#         return Response(status=status.HTTP_200_OK)
-@api_view(['POST'])
+api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdminUser])
 def get_articles(request):
+            
+    """_summary_
+the view of get the list of the articles form the drive  for the uploading function to make the REST API link 
+    """
     
     if request.method == 'POST':
         # serializer=GetUrlSerializer(data=request.data)
@@ -132,31 +143,3 @@ def get_articles(request):
         
         return Response({'message':"correct link"},status=status.HTTP_200_OK)
     return Response({'message': 'Invalid request method'}, status=400)
-
-@api_view(['GET'])
-def get_csrf_token(request):
-    csrf_token = get_token(request)
-    print(csrf_token)
-    return Response({'csrf_token': csrf_token})
-# views.py
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from rest_framework import status
-# from .serializers import LinkSerializer
-# @csrf_exempt
-# class GetLink(APIView):
-    
-    
-#     def post(self, request, format=None):
-#         # Deserialize the incoming data using the LinkSerializer
-#         serializer = LinkSerializer(data=request.data)
-#         if serializer.is_valid():
-#             # Get the validated link value
-#             validated_link = serializer.validated_data['link']
-
-#             # Process the link, save it to ElasticSearch, etc.
-#             # Your logic here...
-
-#             return Response({'message': 'Link saved successfully'}, status=status.HTTP_200_OK)
-
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

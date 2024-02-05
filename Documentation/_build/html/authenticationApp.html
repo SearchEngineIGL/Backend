@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="english" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authentification App &mdash; CRTL F Engine 2023/2024 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=62f75a9a"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Moderator App" href="moderatorApp.html" />
+    <link rel="prev" title="Elastic Search App" href="elasticSearch.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CRTL F Engine
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="adminApp.html">Admin App</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elasticSearch.html">Elastic Search App</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Authentification App</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#authenticationApp.utils.generateOtp"><code class="docutils literal notranslate"><span class="pre">generateOtp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticationApp.utils.send_code_to_user"><code class="docutils literal notranslate"><span class="pre">send_code_to_user()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticationApp.utils.send_normal_email"><code class="docutils literal notranslate"><span class="pre">send_normal_email()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticationApp.views.LogIn"><code class="docutils literal notranslate"><span class="pre">LogIn()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticationApp.views.LogoutUser"><code class="docutils literal notranslate"><span class="pre">LogoutUser()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticationApp.views.PasswordReset"><code class="docutils literal notranslate"><span class="pre">PasswordReset()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticationApp.views.PasswordResetConfirm"><code class="docutils literal notranslate"><span class="pre">PasswordResetConfirm()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticationApp.views.Register"><code class="docutils literal notranslate"><span class="pre">Register()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticationApp.views.SetNewPassword"><code class="docutils literal notranslate"><span class="pre">SetNewPassword()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticationApp.views.VerifyUserEmail"><code class="docutils literal notranslate"><span class="pre">VerifyUserEmail()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticationApp.tests.SendNormalEmailTestCase"><code class="docutils literal notranslate"><span class="pre">SendNormalEmailTestCase</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#authenticationApp.tests.SendNormalEmailTestCase.test_send_normal_email"><code class="docutils literal notranslate"><span class="pre">SendNormalEmailTestCase.test_send_normal_email()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="moderatorApp.html">Moderator App</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userApp.html">User App</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CRTL F Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Authentification App</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/authenticationApp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-authenticationApp.utils">
+<span id="authentification-app"></span><h1>Authentification App<a class="headerlink" href="#module-authenticationApp.utils" title="Link to this heading"></a></h1>
+<p>_summary_</p>
+<p>Authentification module contains all the functions related to the registration</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="authenticationApp.utils.generateOtp">
+<span class="sig-prename descclassname"><span class="pre">authenticationApp.utils.</span></span><span class="sig-name descname"><span class="pre">generateOtp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.utils.generateOtp" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Function for generating OTP code to be send to the user after registration</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="authenticationApp.utils.send_code_to_user">
+<span class="sig-prename descclassname"><span class="pre">authenticationApp.utils.</span></span><span class="sig-name descname"><span class="pre">send_code_to_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.utils.send_code_to_user" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Function for generating OTP code to be send to the user after registration</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="authenticationApp.utils.send_normal_email">
+<span class="sig-prename descclassname"><span class="pre">authenticationApp.utils.</span></span><span class="sig-name descname"><span class="pre">send_normal_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.utils.send_normal_email" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Function for send user confirmation email</p>
+</dd></dl>
+
+<dl class="py function" id="module-authenticationApp.views">
+<dt class="sig sig-object py" id="authenticationApp.views.LogIn">
+<span class="sig-prename descclassname"><span class="pre">authenticationApp.views.</span></span><span class="sig-name descname"><span class="pre">LogIn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.views.LogIn" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Log In view to send the data to the front end</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="authenticationApp.views.LogoutUser">
+<span class="sig-prename descclassname"><span class="pre">authenticationApp.views.</span></span><span class="sig-name descname"><span class="pre">LogoutUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.views.LogoutUser" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Log out  view to send the data to the front end</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="authenticationApp.views.PasswordReset">
+<span class="sig-prename descclassname"><span class="pre">authenticationApp.views.</span></span><span class="sig-name descname"><span class="pre">PasswordReset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.views.PasswordReset" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Password Reset view to send the data to the front end</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="authenticationApp.views.PasswordResetConfirm">
+<span class="sig-prename descclassname"><span class="pre">authenticationApp.views.</span></span><span class="sig-name descname"><span class="pre">PasswordResetConfirm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.views.PasswordResetConfirm" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Password Reset Confirmation view to get the data (code) to the front end</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="authenticationApp.views.Register">
+<span class="sig-prename descclassname"><span class="pre">authenticationApp.views.</span></span><span class="sig-name descname"><span class="pre">Register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.views.Register" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Register view to send the data to the front end</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="authenticationApp.views.SetNewPassword">
+<span class="sig-prename descclassname"><span class="pre">authenticationApp.views.</span></span><span class="sig-name descname"><span class="pre">SetNewPassword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.views.SetNewPassword" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>New password  view to modify the new password</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="authenticationApp.views.VerifyUserEmail">
+<span class="sig-prename descclassname"><span class="pre">authenticationApp.views.</span></span><span class="sig-name descname"><span class="pre">VerifyUserEmail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.views.VerifyUserEmail" title="Link to this definition"></a></dt>
+<dd><p>_summary_</p>
+<p>Email Verification view to send the data to the front end</p>
+</dd></dl>
+
+<dl class="py class" id="module-authenticationApp.tests">
+<dt class="sig sig-object py" id="authenticationApp.tests.SendNormalEmailTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">authenticationApp.tests.</span></span><span class="sig-name descname"><span class="pre">SendNormalEmailTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.tests.SendNormalEmailTestCase" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<p>_Unit test for testing the function of sending a normal email to the user <a href="#id1"><span class="problematic" id="id2">mail_</span></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="authenticationApp.tests.SendNormalEmailTestCase.test_send_normal_email">
+<span class="sig-name descname"><span class="pre">test_send_normal_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">send_mock</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authenticationApp.tests.SendNormalEmailTestCase.test_send_normal_email" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="elasticSearch.html" class="btn btn-neutral float-left" title="Elastic Search App" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="moderatorApp.html" class="btn btn-neutral float-right" title="Moderator App" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, CTRL F Team .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
