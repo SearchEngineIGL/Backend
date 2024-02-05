@@ -10,3 +10,11 @@ Admin App
    :members: 
    :undoc-members:
    :show-inheritance:
+.. automodule:: adminApp.views
+   :members: 
+   :undoc-members:
+   :show-inheritance:
+.. automodule:: adminApp.tests
+   :members: 
+   :undoc-members:
+   :show-inheritance:

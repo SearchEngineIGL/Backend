@@ -213,7 +213,7 @@ def extract_article_pdf(pdf_path,article_id):
         text += blocks_to_text(blocks)
     
         text=text.lower()
-        
+        text = re.sub(r'<img.*?>', '', text)
         
         
         Title=title[4].lower()

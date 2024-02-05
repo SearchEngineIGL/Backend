@@ -14,6 +14,8 @@ Welcome to tpGL's documentation!
    adminApp
    elasticSearch
    authenticationApp
+   moderatorApp
+   userApp
 
 Indices and tables
 ==================

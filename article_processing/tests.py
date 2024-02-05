@@ -3,9 +3,10 @@ from unittest.mock import patch, MagicMock
 from elasticsearch_utils import index_articles  
 
 
-"""_Unit test for testing the function of indexing articles in elastic search_
-"""
 class IndexArticlesTestCase(unittest.TestCase):
+    
+    """_Unit test for testing the function of indexing articles in elastic search_
+    """
 
     @patch('elasticsearch_utils.Elasticsearch')  
     def test_index_articles(self, mock_elasticsearch):

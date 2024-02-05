@@ -12,13 +12,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from article_processing.elasticsearch_utils import filtrer, search ,give_article,get_articles_ordered_by_date
 
-"""_summary_
 
-    Search view to send articles and get the request from the user  
-    """
 @api_view(['GET','POST'])
 @permission_classes([IsAuthenticated, IsSimpleUser])
 def search_view(request,query):
+    """_summary_
+
+    Search view to send articles and get the request from the user  
+    """
     criteria=None
     if request.method == 'GET':
         search_results = search(query)
@@ -49,26 +50,28 @@ def welcomeUser(request):
     return Response({'message':"Welcome User ! "})
 
 
-"""_summary_
 
-    Article view to display it to the user  
-    """
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
 def ViewArticle(request,article_id):
+    """_summary_
+
+    Article view to display it to the user  
+    """
     if request.method=='GET':
         article=give_article(article_id)
         return Response(article,status=status.HTTP_200_OK)
     
 
-"""_summary_
 
-    User view to make modification on the user object    """   
     
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
 def UserSettings(request):
+    """_summary_
+
+    User view to make modification on the user object    """   
     user = request.user
     if request.method == 'GET':
         serializer = ModifyUserSerializer(user)
@@ -83,13 +86,14 @@ def UserSettings(request):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
-"""_summary_
-
-    Favors articles view to add articles to the favors list related to the user
-    """
 @api_view(['POST'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
 def addFav(request):
+    
+    """_summary_
+
+    Favors articles view to add articles to the favors list related to the user
+    """
     user=request.user
     article_id = request.data.get("article_id")
     favs = user.get_additional_data().get('list_of_favorites', [])
@@ -100,13 +104,14 @@ def addFav(request):
 
 
 
-"""_summary_
 
-    Favors articles view to remove articles to the favors list related to the user
-    """    
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
 def rmvFav(request):
+    """_summary_
+
+    Favors articles view to remove articles to the favors list related to the user
+    """    
     user=request.user
     article_id = request.data.get("article_id")
     favs = user.get_additional_data().get('list_of_favorites', [])
@@ -119,13 +124,14 @@ def rmvFav(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
     
 
-"""_summary_
-
-    Favors articles view to get the list of favorite articles from user
-    """      
+    
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
 def getFavs(request):
+    """_summary_
+
+    Favors articles view to get the list of favorite articles from user
+    """  
     articles=[]
     user=request.user
     favors = user.get_additional_data().get('list_of_favorites', [])    
@@ -136,14 +142,15 @@ def getFavs(request):
     return Response(articles,status=status.HTTP_200_OK)
 
 
-"""_summary_
 
-    Favors articles view to if the article is in favor or not
-    """   
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated,IsSimpleUser])
 def isFav(request):
+    """_summary_
+
+    Favors articles view to if the article is in favor or not
+    """   
     article_id = request.data.get("article_id")
     user=request.user
     favors = user.get_additional_data().get('list_of_favorites', [])    
@@ -154,12 +161,13 @@ def isFav(request):
         print('404'+article_id)
         return Response(status=status.HTTP_204_NO_CONTENT)    
     
-"""_summary_
-
-    Home article view to display all recent articles 
-    """  
+ 
 @api_view(['GET'])
 def homeArticles(request):
+    """_summary_
+
+    Home article view to display all recent articles 
+    """ 
     if request.method == 'GET':
         articles=get_articles_ordered_by_date()
         return Response(articles, status=status.HTTP_200_OK)

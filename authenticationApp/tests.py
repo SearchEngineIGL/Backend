@@ -4,9 +4,10 @@ from unittest.mock import patch
 from authenticationApp.utils import send_normal_email
 
 
-"""_Unit test for testing the function of sending a normal email to the user mail_
-"""
+
 class SendNormalEmailTestCase(TestCase):
+    """_Unit test for testing the function of sending a normal email to the user mail_
+"""
 
     @patch('authenticationApp.utils.EmailMessage.send')
     def test_send_normal_email(self, send_mock):

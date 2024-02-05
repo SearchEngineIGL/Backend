@@ -4,9 +4,10 @@ from rest_framework import status
 from authenticationApp.models import CustomUser
 
 
-"""_Unit test for testing the function of creating moderators by the admin_
-"""
+
 class CreateModeratorTestCase(APITestCase):
+    """_Unit test for testing the function of creating moderators by the admin_
+    """
 
     def setUp(self):
         # Create a user with admin privileges for authentication

@@ -23,13 +23,14 @@ def welcomeModerator(request):
 
 
 
-"""_summary_
 
-    Moderator   view to send the data and get the data from the front end
-    """
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated,IsModeratorUser])
 def ModeratorSettings(request):
+    """_summary_
+
+    Moderator   view to send the data and get the data from the front end
+    """
     user = request.user
     if request.method == 'GET':
         serializer = ModifyModeratorSerializer(user)
@@ -45,26 +46,28 @@ def ModeratorSettings(request):
 
 
 
-"""_summary_
 
-    Articles list view to send the data to the front end for correction method
-    """
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsModeratorUser])
 def display_articles_for_correction(request):
+    """_summary_
+
+    Articles list view to send the data to the front end for correction method
+    """
     if request.method =='GET':
         articles = retrieve_all_articles_list()
         return Response(articles,status=status.HTTP_200_OK)
 
 
 
-"""_summary_
 
-    Article  view to send the data to the front end and get the new correction ones  
-    """
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated,IsModeratorUser])
 def CorrectionArticle(request,article_id):
+    """_summary_
+
+    Article  view to send the data to the front end and get the new correction ones  
+    """
     if request.method=='GET':
         article=give_article(article_id)
         return Response(article)
@@ -75,25 +78,27 @@ def CorrectionArticle(request,article_id):
 
 
 
-"""_summary_
 
-    Article view to delete the article if it is full of mistakes 
-    """
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated,IsModeratorUser])
 def deleteArticle(request,article_id):
+  """_summary_
+
+    Article view to delete the article if it is full of mistakes 
+    """
   if request.method=='DELETE':
     delete_article_by_custom_id(article_id)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-"""_summary_
 
-    Article view to publish an article 
-    """
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated,IsModeratorUser])
 def publishAricle(request,article_id):
+  """_summary_
+
+    Article view to publish an article 
+    """
   if request.method=='PATCH':
     publish_article(article_id)
     return Response(status=status.HTTP_200_OK)

@@ -24,13 +24,14 @@ def welcomeAdmin(request):
     return Response({'message':"Welcome Admin ! "})
 
 
-"""_summary_
-the view of creating new moderator to make the REST API link 
-    """
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def create_moderator(request):
+    
+    """_summary_
+the view of creating new moderator to make the REST API link 
+    """
     
     if request.method == 'POST':
         serializer=CreateModeratorserializer(data=request.data)
@@ -42,24 +43,26 @@ def create_moderator(request):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
     
-"""_summary_
-the view of listing all moderators to make the REST API link 
-    """
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def list_of_moderators(request):
+    """_summary_
+    the view of listing all moderators to make the REST API link 
+    """
+
     if request.method =='GET':
         moderators=CustomUser.objects.filter(user_type="moderator")
         serializer=CustomUserSerializer(moderators,many=True)
         return Response(serializer.data)
     
-"""_summary_
-the view of modifying moderator information to make the REST API link 
-    """ 
+
 @api_view(['PUT','GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def MAJ_moderator(request,id):
+    """_summary_
+the view of modifying moderator information to make the REST API link 
+    """ 
     try: 
         user=CustomUser.objects.get(id=id)
     except CustomUser.DoesNotExist():
@@ -76,12 +79,13 @@ def MAJ_moderator(request,id):
             return Response(serializer.data)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
-"""_summary_
-the view of delete a moderator to make the REST API link 
-    """        
+      
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def Delete_moderator(request,id):
+    """_summary_
+the view of delete a moderator to make the REST API link 
+    """  
     if request.method=='DELETE':
         try: 
             user=CustomUser.objects.get(id=id)
@@ -93,13 +97,14 @@ def Delete_moderator(request,id):
         return Response(status=status.HTTP_204_NO_CONTENT)
             
             
-"""_summary_
-the view of changing the Admin settings to make the REST API link 
-    """
+
 
 @api_view(['PUT','GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def AdminSettings(request):
+    """_summary_
+the view of changing the Admin settings to make the REST API link 
+    """
     admin_user=request.user
     if request.method == 'GET':
         serializer = ModifyAdminSerializer(admin_user)
@@ -119,13 +124,14 @@ def AdminSettings(request):
             return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
         
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-        
-"""_summary_
-the view of get the list of the articles form the drive  for the uploading function to make the REST API link 
-    """
+
 api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdminUser])
 def get_articles(request):
+            
+    """_summary_
+the view of get the list of the articles form the drive  for the uploading function to make the REST API link 
+    """
     
     if request.method == 'POST':
         # serializer=GetUrlSerializer(data=request.data)
