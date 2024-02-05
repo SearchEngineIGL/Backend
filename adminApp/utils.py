@@ -1,3 +1,9 @@
+"""
+Admin module contains all the functions related to the admin functionnalities  
+    """  
+
+
+
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from .pdf_extraction import *
@@ -10,19 +16,26 @@ ELASTICSEARCH_USERNAME = 'elastic'
 ELASTICSEARCH_PASSWORD = 'nes2504rine'
 INDEX_NAME='articles_index'
 
-# from .models import CustomUser   
-# from ..article_processing.pdf_extraction import extract_article_pdf
+
 
 def send_moderator_email(data):
+    """_summary_
+    function to send to the moderator an email 
+    """
     email=EmailMessage(
         subject="You're a moderator now ! ",
-        body="Salam Alaikoum, \nCongratulations! you've been added as moderator in Ctrl F website ! \nYou can access with these credentials : \nemail : "+data['email']+"\nPassword : "+data['username']+"\nPlease, change the password as soon as possible.\nThanks." ,
+        body="Salam Alaikoum, \nCongratulations! you've been added as a moderator in Ctrl F website ! \nYou can access with these credentials : \nemail : "+data['email']+"\nPassword : "+data['username']+"\nPlease, change the password as soon as possible.\nThanks." ,
         from_email="enginesearch865@gmail.com",
         to=[data['email']],
     )
     email.send()
-    
+
+
+
 def send_moderator_email_modify(data):
+    """_summary_
+function to send to the moderator an email to tell him we modifie his information
+    """  
     email=EmailMessage(
         subject="Informations Changed ",
         body="Salam Alaikoum, \nYour informations has been changed, you can find here the new ones : \n"+"Username : "+data['username']+"\n"+"Email : "+data['email']+"\nThanks." ,
@@ -30,8 +43,13 @@ def send_moderator_email_modify(data):
         to=[data['email']],
     )
     email.send()
-    
+  
+
+
 def send_moderator_email_delete(email):
+    """_summary_
+function to send to the moderator an email to tell him that he is deleted from the moderator role
+    """  
     email=EmailMessage(
         subject="You're no more moderator ! ",
         body="Salam Alaikoum, \nWe regret to inform you that, with sincere apologies, you have been removed from the list of moderators.\nKind regards." ,
@@ -40,9 +58,10 @@ def send_moderator_email_delete(email):
     )
     email.send()
     
-"""_Function to get the id of a google drive folder_
-"""
+
 def extraire_id_dossier_google_drive(url):
+    """_Function to get the id of a google drive folder _
+    """
     if "drive.google.com" in url and "/folders/" in url:
         debut_id = url.find("/folders/") + len("/folders/")
         fin_id = url.find("/", debut_id)
@@ -54,9 +73,11 @@ def extraire_id_dossier_google_drive(url):
         print("URL invalide. Assurez-vous qu'il s'agit d'un lien vers un dossier Google Drive.")
         return None
 
-"""_Function to get all the pdf files existing in  google drive folder_
-"""
 def lister_fichiers_dans_Drive(folder_id):
+    
+    """_Function to get all the pdf files existing in  google drive folder _
+"""
+    
     gauth = GoogleAuth()
     gauth.LocalWebserverAuth()  # Authentification via un serveur Web local
     drive = GoogleDrive(gauth)
@@ -67,7 +88,12 @@ def lister_fichiers_dans_Drive(folder_id):
 
     return folder_files
 
+
 def get_next_article_id(es, index_name):
+    
+    """_summary_
+    function return the id of the new article added in the index 
+    """
     # Get the count of existing articles in Elasticsearch
     count_response = es.count(index=index_name)
     existing_articles_count = count_response["count"]
@@ -77,6 +103,10 @@ def get_next_article_id(es, index_name):
 
 
 def get_list_extractedFiles(link):
+    
+ """_summary_
+function to get all the articles existing in the drive link and extract each pdf using the extraction method
+"""
  list_articles=[]
  dossier_id = extraire_id_dossier_google_drive(link)
 
@@ -109,8 +139,3 @@ def get_list_extractedFiles(link):
 
 
 
-
-
-# # Main
-# url = "https://drive.google.com/drive/folders/1ZS68gD61U0ZOUkfj0GFcCHYqsHDVv4NX"   
-# listes=get_list_extractedFiles(url)
