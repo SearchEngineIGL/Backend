@@ -7,8 +7,11 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import os
 import sys
-
+import django
 sys.path.insert(0, os.path.abspath('../..'))  # Adjust the relative path based on your project structure
+os.environ['DJANGO_SETTINGS_MODULE'] = 'tpGL.settings'  # Replace with your actual settings module
+
+django.setup()
 
 project = 'CRTL F Documentation'
 copyright = '2023, Nesrine Abla  Hind Lyna '
