@@ -8,3 +8,5 @@ def welcomeElasticSearch(request):
     return Response({'message':"Welcome to elastic search ! "})
 
 
+# def search_view(request):
+#     return render(request, 'search_test.html')

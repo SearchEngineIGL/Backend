@@ -128,6 +128,12 @@ def extract_sections(text,title):
     """__Function to extract  all the other sections from the text 
      of the pdf file __
  """
+    institutions = None  # Initialize with a default value or appropriate value
+    authors = None
+    abstract = None
+    keywords = None
+    content = None
+    references = None
     # Define patterns for each section    
     abstract_pattern = re.compile(r"abstract[\n: ]+(.+?)(?:keywords|$)", re.DOTALL)
     print(text.find("acm reference format:"))
@@ -174,15 +180,16 @@ def replace_newlines(text):
     """__Function to remove all the /n from the extracted text columns to simple text  __
      """
     # Split the text by newline characters
-    lines = text.split('\n')
+    if text!=None:
+        lines = text.split('\n')
 
     # Replace newlines with spaces for all lines except the last one
-    modified_lines = [line.strip() + ' ' for line in lines[:-1]] + [lines[-1]]
+        modified_lines = [line.strip() + ' ' for line in lines[:-1]] + [lines[-1]]
 
     # Join the modified lines back into a single string
-    result_text = ''.join(modified_lines)
+        result_text = ''.join(modified_lines)
 
-    return result_text
+        return result_text
 
 
 

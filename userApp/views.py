@@ -170,4 +170,5 @@ def homeArticles(request):
     """ 
     if request.method == 'GET':
         articles=get_articles_ordered_by_date()
+        print(articles)
         return Response(articles, status=status.HTTP_200_OK)

@@ -349,11 +349,16 @@ def get_articles_ordered_by_date():
         # Use the search API to retrieve 5 articles ordered by the 'date' field
         search_result = es.search(
             index=index_name,
-            body={
-                "query": {"match_all": {}},
-                "sort": [{"date": {"order": "desc"}}],  # Sort by 'date' field in descending order
-                "size": 5  # Specify the number of hits to return (5 in this case)
-            }
+            body = {
+                "query": {
+                "bool": {
+                    "must": {"match_all": {}},
+                    "filter": {"term": {"state": "done"}}
+                }
+            },
+    "sort": [{"date": {"order": "desc"}}],
+    "size": 5
+}
         )
 
         # Access the sorted articles in the search_result
@@ -375,4 +380,4 @@ def get_articles_ordered_by_date():
         print(f"Error retrieving articles: {e}")
         
         
-        
+

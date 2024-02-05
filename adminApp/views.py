@@ -125,7 +125,7 @@ the view of changing the Admin settings to make the REST API link
         
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-api_view(['POST'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdminUser])
 def get_articles(request):
             

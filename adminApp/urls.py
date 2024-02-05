@@ -10,5 +10,5 @@ urlpatterns = [
     path('settings/',views.AdminSettings),
     path('articles/',views.get_articles),
     # path('admin/get_link/', GetLink.as_view(), name='get_link'),
-    path('crfs/',views.get_csrf_token),
+    
 ]
