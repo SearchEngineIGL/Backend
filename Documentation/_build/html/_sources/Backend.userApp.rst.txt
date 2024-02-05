@@ -1,0 +1,93 @@
+Backend.userApp package
+=======================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   Backend.userApp.migrations
+
+Submodules
+----------
+
+Backend.userApp.admin module
+----------------------------
+
+.. automodule:: Backend.userApp.admin
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.userApp.apps module
+---------------------------
+
+.. automodule:: Backend.userApp.apps
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.userApp.models module
+-----------------------------
+
+.. automodule:: Backend.userApp.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.userApp.permissions module
+----------------------------------
+
+.. automodule:: Backend.userApp.permissions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.userApp.serializers module
+----------------------------------
+
+.. automodule:: Backend.userApp.serializers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.userApp.tests module
+----------------------------
+
+.. automodule:: Backend.userApp.tests
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.userApp.urls module
+---------------------------
+
+.. automodule:: Backend.userApp.urls
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.userApp.utils module
+----------------------------
+
+.. automodule:: Backend.userApp.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.userApp.views module
+----------------------------
+
+.. automodule:: Backend.userApp.views
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: Backend.userApp
+   :members:
+   :undoc-members:
+   :show-inheritance:

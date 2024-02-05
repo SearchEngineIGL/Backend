@@ -1,0 +1,8 @@
+Authentification App
+====================
+
+
+.. automodule:: authentificationApp.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

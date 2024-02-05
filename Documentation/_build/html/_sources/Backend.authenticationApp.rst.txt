@@ -1,0 +1,23 @@
+Backend.authenticationApp package
+=================================
+
+
+Submodules
+----------
+
+
+Backend.authenticationApp.utils module
+--------------------------------------
+
+.. automodule:: Backend.authenticationApp.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: Backend.authenticationApp
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="english" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Admin App &#8212; CRTL F Documentation 2023/2024 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=62f75a9a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Elastic Search App" href="elasticSearch.html" />
+    <link rel="prev" title="Welcome to tpGL&#39;s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-adminApp.utils">
+<span id="admin-app"></span><h1>Admin App<a class="headerlink" href="#module-adminApp.utils" title="Link to this heading">¶</a></h1>
+<p>Admin module contains all the functions related to the admin functionnalities</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.utils.extraire_id_dossier_google_drive">
+<span class="sig-prename descclassname"><span class="pre">adminApp.utils.</span></span><span class="sig-name descname"><span class="pre">extraire_id_dossier_google_drive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.utils.extraire_id_dossier_google_drive" title="Link to this definition">¶</a></dt>
+<dd><p>_Function to get the id of a google drive folder _</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.utils.get_list_extractedFiles">
+<span class="sig-prename descclassname"><span class="pre">adminApp.utils.</span></span><span class="sig-name descname"><span class="pre">get_list_extractedFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.utils.get_list_extractedFiles" title="Link to this definition">¶</a></dt>
+<dd><p>_summary_
+function to get all the articles existing in the drive link and extract each pdf using the extraction method</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.utils.get_next_article_id">
+<span class="sig-prename descclassname"><span class="pre">adminApp.utils.</span></span><span class="sig-name descname"><span class="pre">get_next_article_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">es</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.utils.get_next_article_id" title="Link to this definition">¶</a></dt>
+<dd><p>_summary_
+function return the id of the new article added in the index</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.utils.lister_fichiers_dans_Drive">
+<span class="sig-prename descclassname"><span class="pre">adminApp.utils.</span></span><span class="sig-name descname"><span class="pre">lister_fichiers_dans_Drive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.utils.lister_fichiers_dans_Drive" title="Link to this definition">¶</a></dt>
+<dd><p>_Function to get all the pdf files existing in  google drive folder _</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.utils.send_moderator_email">
+<span class="sig-prename descclassname"><span class="pre">adminApp.utils.</span></span><span class="sig-name descname"><span class="pre">send_moderator_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.utils.send_moderator_email" title="Link to this definition">¶</a></dt>
+<dd><p>_summary_
+function to send to the moderator an email</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.utils.send_moderator_email_delete">
+<span class="sig-prename descclassname"><span class="pre">adminApp.utils.</span></span><span class="sig-name descname"><span class="pre">send_moderator_email_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.utils.send_moderator_email_delete" title="Link to this definition">¶</a></dt>
+<dd><p>_summary_
+function to send to the moderator an email to tell him that he is deleted from the moderator role</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.utils.send_moderator_email_modify">
+<span class="sig-prename descclassname"><span class="pre">adminApp.utils.</span></span><span class="sig-name descname"><span class="pre">send_moderator_email_modify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.utils.send_moderator_email_modify" title="Link to this definition">¶</a></dt>
+<dd><p>_summary_
+function to send to the moderator an email to tell him we modifie his information</p>
+</dd></dl>
+
+<dl class="py function" id="module-adminApp.pdf_extraction">
+<dt class="sig sig-object py" id="adminApp.pdf_extraction.blocks_to_text">
+<span class="sig-prename descclassname"><span class="pre">adminApp.pdf_extraction.</span></span><span class="sig-name descname"><span class="pre">blocks_to_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blocks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.pdf_extraction.blocks_to_text" title="Link to this definition">¶</a></dt>
+<dd><p>__Function to transform a block to text(String)
+from the pdf file __</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.pdf_extraction.extract_article_pdf">
+<span class="sig-prename descclassname"><span class="pre">adminApp.pdf_extraction.</span></span><span class="sig-name descname"><span class="pre">extract_article_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">article_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.pdf_extraction.extract_article_pdf" title="Link to this definition">¶</a></dt>
+<dd><p>__Function to read the pdf file and extract all th information needed
+__</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.pdf_extraction.extract_authors_section">
+<span class="sig-prename descclassname"><span class="pre">adminApp.pdf_extraction.</span></span><span class="sig-name descname"><span class="pre">extract_authors_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_position</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.pdf_extraction.extract_authors_section" title="Link to this definition">¶</a></dt>
+<dd><p>__Function to extract authors section (authors + institutions)
+from the pdf file __</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.pdf_extraction.extract_institutions">
+<span class="sig-prename descclassname"><span class="pre">adminApp.pdf_extraction.</span></span><span class="sig-name descname"><span class="pre">extract_institutions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persons</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.pdf_extraction.extract_institutions" title="Link to this definition">¶</a></dt>
+<dd><p>__Function to extract  institutions from the authors section
+from the pdf file __</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.pdf_extraction.extract_references">
+<span class="sig-prename descclassname"><span class="pre">adminApp.pdf_extraction.</span></span><span class="sig-name descname"><span class="pre">extract_references</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.pdf_extraction.extract_references" title="Link to this definition">¶</a></dt>
+<dd><p>__Function to extract  the references from the text 
+of the pdf file __</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.pdf_extraction.extract_sections">
+<span class="sig-prename descclassname"><span class="pre">adminApp.pdf_extraction.</span></span><span class="sig-name descname"><span class="pre">extract_sections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.pdf_extraction.extract_sections" title="Link to this definition">¶</a></dt>
+<dd><p>__Function to extract  all the other sections from the text 
+of the pdf file __</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.pdf_extraction.extract_title">
+<span class="sig-prename descclassname"><span class="pre">adminApp.pdf_extraction.</span></span><span class="sig-name descname"><span class="pre">extract_title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blocks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.pdf_extraction.extract_title" title="Link to this definition">¶</a></dt>
+<dd><p>__Function to extract title
+from the pdf file __</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.pdf_extraction.recognize_authors_with_spacy">
+<span class="sig-prename descclassname"><span class="pre">adminApp.pdf_extraction.</span></span><span class="sig-name descname"><span class="pre">recognize_authors_with_spacy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.pdf_extraction.recognize_authors_with_spacy" title="Link to this definition">¶</a></dt>
+<dd><p>__Function to recongnize authors names using the model of spacy
+in the authors section 
+from the pdf file __</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.pdf_extraction.remove_header_footer">
+<span class="sig-prename descclassname"><span class="pre">adminApp.pdf_extraction.</span></span><span class="sig-name descname"><span class="pre">remove_header_footer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.pdf_extraction.remove_header_footer" title="Link to this definition">¶</a></dt>
+<dd><p>__Function to remove header/footer
+from the pdf file __</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="adminApp.pdf_extraction.replace_newlines">
+<span class="sig-prename descclassname"><span class="pre">adminApp.pdf_extraction.</span></span><span class="sig-name descname"><span class="pre">replace_newlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adminApp.pdf_extraction.replace_newlines" title="Link to this definition">¶</a></dt>
+<dd><p>__Function to remove all the /n from the extracted text columns to simple text  __</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CRTL F Documentation</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Admin App</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.utils.extraire_id_dossier_google_drive"><code class="docutils literal notranslate"><span class="pre">extraire_id_dossier_google_drive()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.utils.get_list_extractedFiles"><code class="docutils literal notranslate"><span class="pre">get_list_extractedFiles()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.utils.get_next_article_id"><code class="docutils literal notranslate"><span class="pre">get_next_article_id()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.utils.lister_fichiers_dans_Drive"><code class="docutils literal notranslate"><span class="pre">lister_fichiers_dans_Drive()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.utils.send_moderator_email"><code class="docutils literal notranslate"><span class="pre">send_moderator_email()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.utils.send_moderator_email_delete"><code class="docutils literal notranslate"><span class="pre">send_moderator_email_delete()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.utils.send_moderator_email_modify"><code class="docutils literal notranslate"><span class="pre">send_moderator_email_modify()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.pdf_extraction.blocks_to_text"><code class="docutils literal notranslate"><span class="pre">blocks_to_text()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.pdf_extraction.extract_article_pdf"><code class="docutils literal notranslate"><span class="pre">extract_article_pdf()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.pdf_extraction.extract_authors_section"><code class="docutils literal notranslate"><span class="pre">extract_authors_section()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.pdf_extraction.extract_institutions"><code class="docutils literal notranslate"><span class="pre">extract_institutions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.pdf_extraction.extract_references"><code class="docutils literal notranslate"><span class="pre">extract_references()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.pdf_extraction.extract_sections"><code class="docutils literal notranslate"><span class="pre">extract_sections()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.pdf_extraction.extract_title"><code class="docutils literal notranslate"><span class="pre">extract_title()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.pdf_extraction.recognize_authors_with_spacy"><code class="docutils literal notranslate"><span class="pre">recognize_authors_with_spacy()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.pdf_extraction.remove_header_footer"><code class="docutils literal notranslate"><span class="pre">remove_header_footer()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adminApp.pdf_extraction.replace_newlines"><code class="docutils literal notranslate"><span class="pre">replace_newlines()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="elasticSearch.html">Elastic Search App</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authenticationApp.html">Authentification App</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to tpGL's documentation!</a></li>
+      <li>Next: <a href="elasticSearch.html" title="next chapter">Elastic Search App</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023, Nesrine Abla  Hind Lyna .
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/adminApp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

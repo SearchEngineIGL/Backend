@@ -5,19 +5,27 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+import os
+import sys
 
-project = 'tpGL'
-copyright = '2023, Nesrine Abla Manar Hind Lyna Amira'
-author = 'Nesrine Abla Manar Hind Lyna Amira'
+sys.path.insert(0, os.path.abspath('../..'))  # Adjust the relative path based on your project structure
+
+project = 'CRTL F Documentation'
+copyright = '2023, Nesrine Abla  Hind Lyna '
+author = 'Nesrine  Abla  Hind Lyna '
 release = '2023/2024'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+        'sphinx.ext.autodoc',
+    # Add other extensions as needed
+]
 
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ['**/migrations/*', '**/tests/*']
+
 
 language = 'english'
 
@@ -26,7 +34,5 @@ language = 'english'
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
-import os
-import sys
 
-sys.path.insert(0, os.path.abspath('E:\Backend'))  # Adjust the path based on your project structure
+

@@ -1,0 +1,85 @@
+Backend.moderatorApp package
+============================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   Backend.moderatorApp.migrations
+
+Submodules
+----------
+
+Backend.moderatorApp.admin module
+---------------------------------
+
+.. automodule:: Backend.moderatorApp.admin
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.moderatorApp.apps module
+--------------------------------
+
+.. automodule:: Backend.moderatorApp.apps
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.moderatorApp.models module
+----------------------------------
+
+.. automodule:: Backend.moderatorApp.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.moderatorApp.permissions module
+---------------------------------------
+
+.. automodule:: Backend.moderatorApp.permissions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.moderatorApp.serializers module
+---------------------------------------
+
+.. automodule:: Backend.moderatorApp.serializers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.moderatorApp.tests module
+---------------------------------
+
+.. automodule:: Backend.moderatorApp.tests
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.moderatorApp.urls module
+--------------------------------
+
+.. automodule:: Backend.moderatorApp.urls
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.moderatorApp.views module
+---------------------------------
+
+.. automodule:: Backend.moderatorApp.views
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: Backend.moderatorApp
+   :members:
+   :undoc-members:
+   :show-inheritance:

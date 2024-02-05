@@ -1,0 +1,29 @@
+Backend.article\_processing package
+===================================
+
+Subpackages
+-----------
+
+
+
+Submodules
+----------
+
+
+
+Backend.article\_processing.elasticsearch\_utils module
+-------------------------------------------------------
+
+.. automodule:: Backend.article_processing.elasticsearch_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: Backend.article_processing
+   :members:
+   :undoc-members:
+   :show-inheritance:

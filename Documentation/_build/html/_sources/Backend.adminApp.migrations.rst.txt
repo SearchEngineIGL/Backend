@@ -1,0 +1,10 @@
+Backend.adminApp.migrations package
+===================================
+
+Module contents
+---------------
+
+.. automodule:: Backend.adminApp.migrations
+   :members:
+   :undoc-members:
+   :show-inheritance:

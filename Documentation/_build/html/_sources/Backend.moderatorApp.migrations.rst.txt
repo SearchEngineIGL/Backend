@@ -1,0 +1,10 @@
+Backend.moderatorApp.migrations package
+=======================================
+
+Module contents
+---------------
+
+.. automodule:: Backend.moderatorApp.migrations
+   :members:
+   :undoc-members:
+   :show-inheritance:

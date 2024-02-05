@@ -1,0 +1,93 @@
+Backend.authenticationApp.migrations package
+============================================
+
+Submodules
+----------
+
+Backend.authenticationApp.migrations.0001\_initial module
+---------------------------------------------------------
+
+.. automodule:: Backend.authenticationApp.migrations.0001_initial
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.authenticationApp.migrations.0002\_alter\_customuser\_photo module
+--------------------------------------------------------------------------
+
+.. automodule:: Backend.authenticationApp.migrations.0002_alter_customuser_photo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.authenticationApp.migrations.0003\_alter\_customuser\_photo module
+--------------------------------------------------------------------------
+
+.. automodule:: Backend.authenticationApp.migrations.0003_alter_customuser_photo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.authenticationApp.migrations.0004\_alter\_customuser\_photo module
+--------------------------------------------------------------------------
+
+.. automodule:: Backend.authenticationApp.migrations.0004_alter_customuser_photo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.authenticationApp.migrations.0005\_alter\_customuser\_photo module
+--------------------------------------------------------------------------
+
+.. automodule:: Backend.authenticationApp.migrations.0005_alter_customuser_photo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.authenticationApp.migrations.0006\_alter\_customuser\_photo module
+--------------------------------------------------------------------------
+
+.. automodule:: Backend.authenticationApp.migrations.0006_alter_customuser_photo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.authenticationApp.migrations.0007\_alter\_customuser\_photo module
+--------------------------------------------------------------------------
+
+.. automodule:: Backend.authenticationApp.migrations.0007_alter_customuser_photo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.authenticationApp.migrations.0008\_customuser\_favors module
+--------------------------------------------------------------------
+
+.. automodule:: Backend.authenticationApp.migrations.0008_customuser_favors
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.authenticationApp.migrations.0009\_alter\_customuser\_favors module
+---------------------------------------------------------------------------
+
+.. automodule:: Backend.authenticationApp.migrations.0009_alter_customuser_favors
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.authenticationApp.migrations.0010\_remove\_customuser\_favors module
+----------------------------------------------------------------------------
+
+.. automodule:: Backend.authenticationApp.migrations.0010_remove_customuser_favors
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: Backend.authenticationApp.migrations
+   :members:
+   :undoc-members:
+   :show-inheritance:

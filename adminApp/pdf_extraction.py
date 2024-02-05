@@ -2,10 +2,11 @@ import re
 import spacy
 import fitz 
 import requests
-"""__Function to remove header/footer
-     from the pdf file__
-    """
+
 def remove_header_footer(page):
+     """__Function to remove header/footer
+     from the pdf file __
+     """
      header_long=20
      footer_long=30
      blocks = page.get_text("blocks")
@@ -18,10 +19,11 @@ def remove_header_footer(page):
      if footer_block[3]-footer_block[1]<= footer_long:
         blocks.remove(footer_block) 
      return blocks
-"""__Function to extract title
-     from the pdf file__
-    """
+
 def extract_title(blocks):
+    """__Function to extract title
+     from the pdf file __
+    """
     num = 0
     title_not_found = True
     title_position = 50
@@ -36,19 +38,21 @@ def extract_title(blocks):
             num += 1
     return title_block
 
-"""__Function to transform a block to text(String)
-     from the pdf file__
-    """
+
 def blocks_to_text(blocks):
+    """__Function to transform a block to text(String)
+     from the pdf file __
+    """
     text = ""
     for block in blocks:
         if type(block[4]) == str:
             text += block[4] + " "  # Append the text and add a space between blocks
     return text.strip()  # Remove leading and trailing whitespaces
-"""__Function to extract authors section (authors + institutions)
-     from the pdf file__
- """
+
 def extract_authors_section(text, start_position):
+    """__Function to extract authors section (authors + institutions)
+     from the pdf file __
+     """
     # Convert search terms and text to lowercase
     lower_text = text.lower()
     start_position = max(0, min(len(text), start_position))
@@ -69,11 +73,12 @@ def extract_authors_section(text, start_position):
 
     return extracted_text.strip()
 
-"""__Function to recongnize authors names using the model of spacy
-     in the authors section 
-     from the pdf file__
- """
+
 def recognize_authors_with_spacy(text):
+    """__Function to recongnize authors names using the model of spacy
+     in the authors section 
+     from the pdf file __
+ """
     nlp = spacy.load("en_core_web_lg")
     # Use spaCy to recognize persons (authors)
     doc = nlp(text)
@@ -89,10 +94,11 @@ def recognize_authors_with_spacy(text):
          doc = nlp(text)
          persons = [ent.text for ent in doc.ents if ent.label_ == "PERSON"] 
     return persons
-"""__Function to extract  institutions from the authors section
-     from the pdf file__
- """
+
 def extract_institutions(text, persons):
+    """__Function to extract  institutions from the authors section
+     from the pdf file __
+ """
     # Split the text into lines
     lines = text.split('\n')
 
@@ -108,19 +114,20 @@ def extract_institutions(text, persons):
     cleaned_text = '\n'.join(lines)
 
     return cleaned_text.strip()
-"""__Function to extract  the references from the text 
-     of the pdf file__
- """
+
 def extract_references(text):
-    
+    """__Function to extract  the references from the text 
+     of the pdf file __
+ """
     start_position = text.find("references")
 
     extracted_text = text[start_position:]
     return extracted_text
-"""__Function to extract  all the other sections from the text 
-     of the pdf file__
- """
+
 def extract_sections(text,title):
+    """__Function to extract  all the other sections from the text 
+     of the pdf file __
+ """
     # Define patterns for each section    
     abstract_pattern = re.compile(r"abstract[\n: ]+(.+?)(?:keywords|$)", re.DOTALL)
     print(text.find("acm reference format:"))
@@ -164,6 +171,8 @@ def extract_sections(text,title):
 
 
 def replace_newlines(text):
+    """__Function to remove all the /n from the extracted text columns to simple text  __
+     """
     # Split the text by newline characters
     lines = text.split('\n')
 
@@ -178,11 +187,12 @@ def replace_newlines(text):
 
 
 
-"""__Function to read the pdf file and extract all th information needed
-     __
- """
 
 def extract_article_pdf(pdf_path,article_id):
+    
+     """__Function to read the pdf file and extract all th information needed
+     __
+     """
       # Fetch PDF content from the URL
      response = requests.get(pdf_path)
     

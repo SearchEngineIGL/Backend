@@ -1,0 +1,42 @@
+Backend.adminApp package
+========================
+
+Subpackages
+-----------
+
+
+Submodules
+----------
+
+
+Backend.adminApp.pdf\_extraction module
+---------------------------------------
+
+.. automodule:: Backend.adminApp.pdf_extraction
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.adminApp.utils module
+-----------------------------
+
+.. automodule:: Backend.adminApp.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Backend.adminApp.views module
+-----------------------------
+
+.. automodule:: Backend.adminApp.views
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: Backend.adminApp
+   :members:
+   :undoc-members:
+   :show-inheritance:

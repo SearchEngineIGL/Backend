@@ -159,7 +159,6 @@ def isFav(request):
     Home article view to display all recent articles 
     """  
 @api_view(['GET'])
-@permission_classes([IsAuthenticated, IsSimpleUser])
 def homeArticles(request):
     if request.method == 'GET':
         articles=get_articles_ordered_by_date()

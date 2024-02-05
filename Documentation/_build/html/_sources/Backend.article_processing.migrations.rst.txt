@@ -1,0 +1,10 @@
+Backend.article\_processing.migrations package
+==============================================
+
+Module contents
+---------------
+
+.. automodule:: Backend.article_processing.migrations
+   :members:
+   :undoc-members:
+   :show-inheritance:

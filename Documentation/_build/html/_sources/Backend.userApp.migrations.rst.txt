@@ -1,0 +1,10 @@
+Backend.userApp.migrations package
+==================================
+
+Module contents
+---------------
+
+.. automodule:: Backend.userApp.migrations
+   :members:
+   :undoc-members:
+   :show-inheritance:

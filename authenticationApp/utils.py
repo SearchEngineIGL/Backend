@@ -5,27 +5,30 @@
 
 
 
+
 import random
 from django.core.mail import EmailMessage
 from authenticationApp.models import OneTimePassword,CustomUser
 
-"""_summary_
+
+def generateOtp():
+    
+    """_summary_
 
     Function for generating OTP code to be send to the user after registration
     """
-
-def generateOtp():
     otp=""
     for i in range(6):
         otp+=str(random.randint(1,9))
     return otp
 
 
-"""_summary_
+def send_code_to_user(email):
+    
+    """_summary_
 
     Function for generating OTP code to be send to the user after registration
     """
-def send_code_to_user(email):
     Subject="One time pascode for Email verification"
     otp_code=generateOtp()
     print (otp_code)
@@ -40,11 +43,12 @@ def send_code_to_user(email):
 
 
 
-"""_summary_
+
+def send_normal_email(data):
+    """_summary_
 
     Function for send user confirmation email
     """  
-def send_normal_email(data):
     email=EmailMessage(
         subject=data['email_subject'],
         body=data['email_body'],

@@ -1,0 +1,22 @@
+Backend package
+===============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   Backend.adminApp
+   Backend.article_processing
+   Backend.authenticationApp
+   
+
+
+Module contents
+---------------
+
+.. automodule:: Backend
+   :members:
+   :undoc-members:
+   :show-inheritance:
